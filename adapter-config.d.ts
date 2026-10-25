@@ -7,10 +7,12 @@ export {};
 declare global {
     namespace ioBroker {
         interface AdapterConfig {
-            apiUrl: string;
+            host: string;
+            apiPath: string;
             apiToken: string;
             sourceType: "solarlogJournal" | "counters";
             journalStateId: string;
+            unitMap: { source: string; target: string; skip: boolean }[];
             snapshotTime: string;
             staleMinutes: number;
             meters: {

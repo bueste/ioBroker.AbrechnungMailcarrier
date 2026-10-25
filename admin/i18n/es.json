@@ -1,4 +1,7 @@
 {
+    "apiPath": "Ruta API",
+    "apiPathHelp": "Normalmente /api/v1, no cambie.",
+    "apiPathInvalid": "Ingrese una ruta como /api/v1.",
     "apiToken": "token API",
     "apiTokenHelp": "Comienza con abrk_. Pertenece exactamente a un cliente y se muestra sólo una vez cuando se crea; Se puede crear uno nuevo y revocar el antiguo en cualquier momento.",
     "apiUrl": "URL de la API",
@@ -8,6 +11,9 @@
     "feedinTable": "Alimentación a la red (opcional)",
     "feedinTableHelp": "Si existe un contador de inyección, el autoconsumo es la producción menos la inyección. Sin él, se utiliza la menor cantidad entre la producción y el consumo total.",
     "hintConnectionText": "El adaptador envía las cifras diarias a la aplicación web Abrechnung Mailcarrier a través de HTTPS. La URL de la API y el token provienen de la administración del cliente de la aplicación web (página Mandanten).",
+    "host": "Servidor",
+    "hostHelp": "Sólo nombre de host, p. abr.bronnenhuber.ch. La conexión siempre está cifrada (HTTPS).",
+    "hostInvalid": "Introduzca sólo el nombre del host, sin la ruta (p. ej. abr.bronnenhuber.ch).",
     "journalStateId": "Estado de la revista",
     "journalStateIdHelp": "Estado del adaptador solarlog que contiene el diario (predeterminado solarlog.0.Database.dailyJournal).",
     "metersTable": "Unidades (apartamentos)",
@@ -29,5 +35,10 @@
     "staleMinutesHelp": "Una lectura anterior a esta al cerrar el día marca el día como obsoleto.",
     "testConnection": "Conexión de prueba",
     "unit": "Unidad",
+    "unitMapSkip": "Dejar",
+    "unitMapSource": "Nombre en la revista",
+    "unitMapTable": "Unidades de la revista (opcional)",
+    "unitMapTableHelp": "Sólo es necesario si una unidad del diario solarlog debe llamarse de otra manera en la facturación o no debe entregarse.",
+    "unitMapTarget": "Nombre en la facturación",
     "unitName": "Nombre de la unidad"
 }

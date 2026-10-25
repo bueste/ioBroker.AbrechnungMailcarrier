@@ -1,4 +1,7 @@
 {
+    "apiPath": "API路径",
+    "apiPathHelp": "一般是/api/v1，不用改动。",
+    "apiPathInvalid": "输入类似 /api/v1 的路径。",
     "apiToken": "API令牌",
     "apiTokenHelp": "以 abrk_ 开头。它只属于一个客户端，并且在创建时仅显示一次；可以随时创建新的并撤销旧的。",
     "apiUrl": "API网址",
@@ -8,6 +11,9 @@
     "feedinTable": "馈入电网（可选）",
     "feedinTableHelp": "如果存在馈入计量表，则自耗量为产量减去馈入量。如果没有它，则使用产量和总消耗中较小的一个。",
     "hintConnectionText": "该适配器通过 HTTPS 将每日数据传送到 Abrechnung Mailrier Web 应用程序。 API URL 和令牌来自 Web 应用程序的客户端管理（Mandanten 页面）。",
+    "host": "服务器",
+    "hostHelp": "仅主机名，例如abr.bronnenhuber.ch。连接始终是加密的 (HTTPS)。",
+    "hostInvalid": "仅输入主机名，不输入路径（例如 abr.bronnenhuber.ch）。",
     "journalStateId": "期刊状态",
     "journalStateIdHelp": "保存每日日志的 Solarlog 适配器的状态（默认 Solarlog.0.Database.dailyJournal）。",
     "metersTable": "单位（公寓）",
@@ -29,5 +35,10 @@
     "staleMinutesHelp": "当日收盘时读数早于此值则表明该日已过时。",
     "testConnection": "测试连接",
     "unit": "单元",
+    "unitMapSkip": "省略",
+    "unitMapSource": "日记中的名字",
+    "unitMapTable": "期刊单位（可选）",
+    "unitMapTableHelp": "仅当必须在计费中以不同方式调用 Solarlog 日志的单位或根本不能交付时才需要。",
+    "unitMapTarget": "帐单上的姓名",
     "unitName": "单位名称"
 }

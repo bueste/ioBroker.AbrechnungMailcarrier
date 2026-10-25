@@ -16,17 +16,33 @@
                     "lg": 12,
                     "xl": 12
                 },
-                "apiUrl": {
+                "host": {
                     "type": "text",
-                    "label": "apiUrl",
-                    "help": "apiUrlHelp",
+                    "label": "host",
+                    "help": "hostHelp",
                     "newLine": true,
                     "trim": true,
+                    "validator": "/^(https?:\\/\\/)?([a-zA-Z0-9]([a-zA-Z0-9.-]*[a-zA-Z0-9])?|\\[[0-9a-fA-F:]+\\])(:[0-9]{1,5})?\\/*$/.test(data.host)",
+                    "validatorErrorText": "hostInvalid",
                     "xs": 12,
                     "sm": 12,
                     "md": 8,
                     "lg": 8,
                     "xl": 8
+                },
+                "apiPath": {
+                    "type": "text",
+                    "label": "apiPath",
+                    "help": "apiPathHelp",
+                    "newLine": true,
+                    "trim": true,
+                    "validator": "/^\\/?([A-Za-z0-9._~-]+\\/?)+$/.test(data.apiPath)",
+                    "validatorErrorText": "apiPathInvalid",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "apiToken": {
                     "type": "password",
@@ -43,7 +59,7 @@
                     "type": "sendTo",
                     "label": "testConnection",
                     "command": "testConnection",
-                    "jsonData": "{ \"apiUrl\": \"${data.apiUrl}\", \"apiToken\": \"${data.apiToken}\" }",
+                    "jsonData": "{ \"host\": \"${data.host}\", \"apiPath\": \"${data.apiPath}\", \"apiToken\": \"${data.apiToken}\" }",
                     "newLine": true,
                     "xs": 12,
                     "sm": 6,
@@ -90,6 +106,39 @@
                     "md": 8,
                     "lg": 8,
                     "xl": 8
+                },
+                "unitMap": {
+                    "type": "table",
+                    "label": "unitMapTable",
+                    "help": "unitMapTableHelp",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "source",
+                            "title": "unitMapSource",
+                            "width": "35%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "target",
+                            "title": "unitMapTarget",
+                            "width": "35%"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "skip",
+                            "title": "unitMapSkip",
+                            "width": "15%",
+                            "default": false
+                        }
+                    ]
                 },
                 "snapshotTime": {
                     "type": "text",

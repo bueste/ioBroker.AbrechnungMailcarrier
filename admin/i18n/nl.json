@@ -1,4 +1,7 @@
 {
+    "apiPath": "API-pad",
+    "apiPathHelp": "Normaal gesproken verandert /api/v1 niet.",
+    "apiPathInvalid": "Voer een pad in zoals /api/v1.",
     "apiToken": "API-token",
     "apiTokenHelp": "Begint met abrk_. Het hoort bij precies één klant en wordt slechts één keer getoond wanneer het wordt aangemaakt; er kan op elk moment een nieuwe worden aangemaakt en de oude kan worden ingetrokken.",
     "apiUrl": "API-URL",
@@ -8,6 +11,9 @@
     "feedinTable": "Teruglevering aan het elektriciteitsnet (optioneel)",
     "feedinTableHelp": "Als er een terugleveringsmeter bestaat, is het eigen verbruik de productie minus de teruglevering. Zonder dit wordt de kleinste van de productie en de totale consumptie gebruikt.",
     "hintConnectionText": "De adapter levert de dagcijfers via HTTPS aan de webapplicatie Abrechnung Mailcarrier. De API-URL en het token komen uit de klantenadministratie van de webapplicatie (pagina Mandanten).",
+    "host": "Server",
+    "hostHelp": "Alleen hostnaam, b.v. abr.bronnenhuber.ch. De verbinding is altijd gecodeerd (HTTPS).",
+    "hostInvalid": "Voer alleen de hostnaam in, zonder pad (bijvoorbeeld abr.bronnenhuber.ch).",
     "journalStateId": "Journaal staat",
     "journalStateIdHelp": "Staat van de solarlog-adapter die het dagelijkse journaal bevat (standaard solarlog.0.Database.dailyJournal).",
     "metersTable": "Eenheden (appartementen)",
@@ -29,5 +35,10 @@
     "staleMinutesHelp": "Een lezing ouder dan deze bij het sluiten van de dag markeert de dag als verouderd.",
     "testConnection": "Verbinding testen",
     "unit": "Eenheid",
+    "unitMapSkip": "Laat weg",
+    "unitMapSource": "Naam in het dagboek",
+    "unitMapTable": "Eenheden van het journaal (optioneel)",
+    "unitMapTableHelp": "Alleen nodig als een eenheid van het solarlog-journaal op de factuur anders moet worden genoemd of helemaal niet moet worden geleverd.",
+    "unitMapTarget": "Naam op de factuur",
     "unitName": "Naam van eenheid"
 }

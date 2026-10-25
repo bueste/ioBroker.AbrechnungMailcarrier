@@ -72,11 +72,20 @@ always exactly the consumption of the unit. Notes:
 
 | Setting | Meaning |
 |---|---|
-| API URL | `https://<host>/api/v1`, from the web application |
-| API token | `abrk_...`, created per client in the web application (page *Mandanten*), shown once, can be revoked |
+| Server | host name only, e.g. `abr.bronnenhuber.ch`; the connection is always HTTPS (plain HTTP is accepted for localhost only) |
+| API path | `/api/v1`, normally not changed |
+| API token | `abrk_...`, created per client in the Administration area of the web application (Clients, tab Access), shown once, can be revoked; stored encrypted |
 | Source | journal of iobroker.solarlog, or energy states |
+| Units of the journal | optional table: rename a unit of the solarlog journal for the billing, or leave it out |
 
-The button *Test connection* checks URL and token and shows the name of the client.
+The button *Test connection* checks server and token (also the already saved one) and shows the name of the client.
+
+## Security
+
+- The token belongs to exactly one client; the server derives the client from the token, never from the payload.
+- The server stores only a hash of the token. A token can expire, be bound to addresses and be revoked at any time.
+- The adapter never follows redirects, refuses non-HTTPS servers (except localhost) and uses a 30 s timeout.
+- The token is stored in the encrypted part of the instance configuration and is never written to the log.
 
 ## States
 
@@ -103,7 +112,7 @@ from the stored row.
 {
   "schema": 1,
   "source": "iobroker-solarlog",
-  "adapter_version": "0.1.0",
+  "adapter_version": "0.1.1",
   "meter_daily": [
     { "date": "2026-10-24", "meter": "WHG 1", "verbrauch_kwh": 10.5, "solarbezug_kwh": 4.0, "netzbezug_kwh": 6.5,
       "tarif_netz": 0.28, "tarif_solar": 0.20, "total_chf": 2.92, "methode": "integriert", "quality": "ok" }

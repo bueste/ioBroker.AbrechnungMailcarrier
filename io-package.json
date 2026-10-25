@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "news": {
+            "0.1.1": {
+                "en": "The server is entered as a host name (no URL), the API path is a separate field. New unit table to rename or leave out units of the solarlog journal. The connection test also works with an already saved token.",
+                "de": "Der Server wird als Hostname eingetragen (keine URL), der API-Pfad ist ein eigenes Feld. Neue Einheiten-Tabelle, um Einheiten des solarlog-Journals umzubenennen oder auszulassen. Der Verbindungstest funktioniert auch mit einem bereits gespeicherten Token.",
+                "ru": "Сервер вводится как имя хоста (без URL), путь к API — отдельное поле. Новая таблица единиц измерения для переименования или исключения единиц измерения журнала Solarlog. Проверка соединения также работает с уже сохраненным токеном.",
+                "pt": "O servidor é inserido como um nome de host (sem URL), o caminho da API é um campo separado. Nova tabela de unidades para renomear ou omitir unidades do diário solarlog. O teste de conexão também funciona com um token já salvo.",
+                "nl": "De server wordt ingevoerd als hostnaam (geen URL), het API-pad is een apart veld. Nieuwe eenhedentabel om eenheden van het solarlog-journaal te hernoemen of weg te laten. De verbindingstest werkt ook met een reeds opgeslagen token.",
+                "fr": "Le serveur est saisi sous forme de nom d'hôte (pas d'URL), le chemin de l'API est un champ distinct. Nouveau tableau d'unités pour renommer ou omettre les unités du journal solarlog. Le test de connexion fonctionne également avec un token déjà enregistré.",
+                "it": "Il server viene inserito come nome host (nessun URL), il percorso API è un campo separato. Nuova tabella delle unità per rinominare o tralasciare le unità del giornale Solarlog. Il test di connessione funziona anche con un token già salvato.",
+                "es": "El servidor se ingresa como nombre de host (sin URL), la ruta API es un campo separado. Nueva tabla de unidades para cambiar el nombre o omitir unidades del diario solarlog. La prueba de conexión también funciona con un token ya guardado.",
+                "pl": "Serwer podawany jest jako nazwa hosta (bez adresu URL), ścieżka API to osobne pole. Nowa tabela jednostek umożliwiająca zmianę nazwy lub pominięcie jednostek dziennika solarlog. Test połączenia działa również z już zapisanym tokenem.",
+                "uk": "Сервер вводиться як ім’я хоста (без URL-адреси), шлях API є окремим полем. Нова таблиця одиниць, щоб перейменувати або виключити одиниці журналу solarlog. Тест підключення також працює з уже збереженим маркером.",
+                "zh-cn": "服务器作为主机名（无 URL）输入，API 路径是一个单独的字段。新单位表用于重命名或省略 Solarlog 日志的单位。连接测试也适用于已保存的令牌。"
+            },
             "0.1.0": {
                 "en": "Initial release: delivers the daily figures per apartment to the Abrechnung Mailcarrier web application over HTTPS. Sources: the local journal of iobroker.solarlog, or energy states of other adapters (e.g. Shelly meters and an inverter adapter).",
                 "de": "Erste Version: liefert die Tageswerte je Wohnung per HTTPS an die Webanwendung Abrechnung Mailcarrier. Quellen: das lokale Journal von iobroker.solarlog oder Energie-States anderer Adapter (z.B. Shelly-Zähler und ein Wechselrichter-Adapter).",
@@ -87,7 +100,8 @@
         ]
     },
     "native": {
-        "apiUrl": "https://abr.bronnenhuber.ch/api/v1",
+        "host": "abr.bronnenhuber.ch",
+        "apiPath": "/api/v1",
         "apiToken": "",
         "sourceType": "solarlogJournal",
         "journalStateId": "solarlog.0.Database.dailyJournal",
@@ -95,7 +109,8 @@
         "staleMinutes": 60,
         "meters": [],
         "production": [],
-        "feedin": []
+        "feedin": [],
+        "unitMap": []
     },
     "protectedNative": [
         "apiToken"

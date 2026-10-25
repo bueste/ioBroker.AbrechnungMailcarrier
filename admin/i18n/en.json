@@ -1,8 +1,6 @@
 {
     "connectionTab": "Connection",
-    "hintConnectionText": "The adapter delivers the daily figures to the Abrechnung Mailcarrier web application over HTTPS. The API URL and the token come from the client administration of the web application (page Mandanten).",
-    "apiUrl": "API URL",
-    "apiUrlHelp": "Address of the API, ending in /api/v1. Must start with https://.",
+    "hintConnectionText": "The adapter delivers the daily figures to the Abrechnung Mailcarrier web application over HTTPS. Server and token come from the Administration area of the web application (Clients, tab Access).",
     "apiToken": "API token",
     "apiTokenHelp": "Starts with abrk_. It belongs to exactly one client and is shown only once when it is created; a new one can be created and the old one revoked at any time.",
     "testConnection": "Test connection",
@@ -29,5 +27,16 @@
     "productionTableHelp": "Energy states of the production of all inverters. They are added up.",
     "feedinTable": "Feed-in into the grid (optional)",
     "feedinTableHelp": "If a feed-in meter exists, the self-consumption is production minus feed-in. Without it, the smaller of production and total consumption is used.",
-    "snapshotTimeInvalid": "Please enter a time as HH:MM."
+    "snapshotTimeInvalid": "Please enter a time as HH:MM.",
+    "host": "Server",
+    "hostHelp": "Host name only, e.g. abr.bronnenhuber.ch. The connection is always encrypted (HTTPS).",
+    "hostInvalid": "Enter only the host name, without path (e.g. abr.bronnenhuber.ch).",
+    "apiPath": "API path",
+    "apiPathHelp": "Normally /api/v1, do not change.",
+    "apiPathInvalid": "Enter a path like /api/v1.",
+    "unitMapTable": "Units of the journal (optional)",
+    "unitMapTableHelp": "Only needed if a unit of the solarlog journal must be called differently in the billing, or must not be delivered at all.",
+    "unitMapSource": "Name in the journal",
+    "unitMapTarget": "Name in the billing",
+    "unitMapSkip": "Leave out"
 }

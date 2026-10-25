@@ -1,4 +1,7 @@
 {
+    "apiPath": "Percorso dell'API",
+    "apiPathHelp": "Normalmente /api/v1, non cambia.",
+    "apiPathInvalid": "Inserisci un percorso come /api/v1.",
     "apiToken": "Token API",
     "apiTokenHelp": "Inizia con abrk_. Appartiene esattamente ad un client e viene mostrato una sola volta al momento della creazione; è possibile crearne uno nuovo e revocare quello vecchio in qualsiasi momento.",
     "apiUrl": "URL dell'API",
@@ -8,6 +11,9 @@
     "feedinTable": "Immissione in rete (opzionale)",
     "feedinTableHelp": "Se esiste un contatore di immissione in rete, l'autoconsumo è pari alla produzione meno l'immissione in rete. Senza di esso, viene utilizzato il minore tra la produzione e il consumo totale.",
     "hintConnectionText": "L'adattatore fornisce i dati giornalieri all'applicazione web Abrechnung Mailcarrier tramite HTTPS. L'URL API e il token provengono dall'amministrazione client dell'applicazione web (pagina Mandanten).",
+    "host": "Server",
+    "hostHelp": "Solo nome host, ad es. abr.bronnenhuber.ch. La connessione è sempre crittografata (HTTPS).",
+    "hostInvalid": "Inserire solo il nome dell'host, senza percorso (ad es. abr.bronnenhuber.ch).",
     "journalStateId": "Stato del giornale",
     "journalStateIdHelp": "Stato dell'adattatore Solarlog che contiene il diario giornaliero (predefinito solarlog.0.Database.dailyJournal).",
     "metersTable": "Unità (appartamenti)",
@@ -29,5 +35,10 @@
     "staleMinutesHelp": "Una lettura più vecchia di questa alla chiusura della giornata indica la giornata come obsoleta.",
     "testConnection": "Testare la connessione",
     "unit": "Unità",
+    "unitMapSkip": "Lascia fuori",
+    "unitMapSource": "Nome nel diario",
+    "unitMapTable": "Unità della rivista (facoltativo)",
+    "unitMapTableHelp": "Necessario solo se un'unità del giornale Solarlog deve essere denominata diversamente nella fatturazione o non deve essere consegnata affatto.",
+    "unitMapTarget": "Nome nella fatturazione",
     "unitName": "Nome dell'unità"
 }

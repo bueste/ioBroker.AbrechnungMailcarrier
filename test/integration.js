@@ -102,7 +102,8 @@ tests.integration(path.join(__dirname, ".."), {
                 const harness = getHarness();
                 await harness.changeAdapterConfig("abrechnungmailcarrier", {
                     native: {
-                        apiUrl: `http://127.0.0.1:${api.port}/api/v1`,
+                        host: `127.0.0.1:${api.port}`,
+                        apiPath: "/api/v1",
                         apiToken: "abrk_testtoken",
                         sourceType: "solarlogJournal",
                         journalStateId: JOURNAL_ID,

@@ -11,6 +11,7 @@ const {
     parseSolarlogJournal,
     serializeJournal,
 } = require("./lib/days");
+const { applyUnitMap, buildBaseUrl } = require("./lib/config");
 const pkg = require("./package.json");
 
 /** Retry delay after a network or server problem. */
@@ -51,11 +52,11 @@ class AbrechnungMailcarrier extends utils.Adapter {
     async onReady() {
         await this.setState("info.connection", false, true);
 
-        const baseUrl = String(this.config.apiUrl || "").trim();
+        const { baseUrl, error } = buildBaseUrl(this.config);
         const token = String(this.config.apiToken || "").trim();
-        if (!baseUrl || !token) {
+        if (error || !token) {
             this.log.error(
-                "API URL or API token missing. Please set both in the instance configuration.",
+                `${error || "API token missing."} Please check server and API token in the instance configuration.`,
             );
             return;
         }
@@ -174,7 +175,7 @@ class AbrechnungMailcarrier extends utils.Adapter {
         const { days, skipped } = parseSolarlogJournal(st.val);
         skipped.forEach((s) => this.log.warn(`Journal entry skipped: ${s}`));
         const own = await this.loadJournal();
-        const merged = mergeDays(own, days);
+        const merged = mergeDays(own, applyUnitMap(days, this.config.unitMap));
         if (JSON.stringify(merged) !== JSON.stringify(own)) {
             await this.saveJournal(merged);
             this.log.debug(`Journal now holds ${merged.length} day(s)`);
@@ -326,12 +327,24 @@ class AbrechnungMailcarrier extends utils.Adapter {
             return;
         }
         const msg = obj.message || {};
-        const client = new ApiClient({
-            baseUrl: String(msg.apiUrl || ""),
-            token: String(msg.apiToken || ""),
-            userAgent: `iobroker.abrechnungmailcarrier/${pkg.version}`,
-        });
-        const res = await client.status();
+        const { baseUrl, error } = buildBaseUrl(msg);
+        // the token field of the form is only filled when it was just typed; otherwise the saved one is used
+        const token = String(msg.apiToken || this.config.apiToken || "").trim();
+        let res;
+        if (error || !token) {
+            res = {
+                ok: false,
+                kind: "config",
+                message: error || "No API token entered.",
+            };
+        } else {
+            const client = new ApiClient({
+                baseUrl,
+                token,
+                userAgent: `iobroker.abrechnungmailcarrier/${pkg.version}`,
+            });
+            res = await client.status();
+        }
         let text;
         if (res.ok) {
             const c = res.data.client || {};

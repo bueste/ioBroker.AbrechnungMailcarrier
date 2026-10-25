@@ -1,4 +1,7 @@
 {
+    "apiPath": "Ścieżka API",
+    "apiPathHelp": "Zwykle /api/v1 nie zmieniaj.",
+    "apiPathInvalid": "Wprowadź ścieżkę, taką jak /api/v1.",
     "apiToken": "Token API",
     "apiTokenHelp": "Zaczyna się od abrk_. Należy do dokładnie jednego klienta i jest pokazywany tylko raz podczas jego tworzenia; w każdej chwili można utworzyć nowy, a stary odwołać.",
     "apiUrl": "Adres URL interfejsu API",
@@ -8,6 +11,9 @@
     "feedinTable": "Zasilanie do sieci (opcjonalnie)",
     "feedinTableHelp": "Jeżeli istnieje licznik zasilania, zużycie własne to produkcja pomniejszona o zasilanie. Bez tego wykorzystywana jest mniejsza produkcja i całkowite zużycie.",
     "hintConnectionText": "Adapter dostarcza dzienne dane do aplikacji internetowej Abrechnung Mailcarrier za pośrednictwem protokołu HTTPS. Adres URL API i token pochodzą z administracji klienta aplikacji internetowej (strona Mandanten).",
+    "host": "Serwer",
+    "hostHelp": "Tylko nazwa hosta, np. abr.bronnenhuber.ch. Połączenie jest zawsze szyfrowane (HTTPS).",
+    "hostInvalid": "Wpisz tylko nazwę hosta, bez ścieżki (np. abr.bronnenhuber.ch).",
     "journalStateId": "Stan dziennika",
     "journalStateIdHelp": "Stan adaptera solarlog przechowującego dziennik dzienny (domyślny solarlog.0.Database.dailyJournal).",
     "metersTable": "Jednostki (apartamenty)",
@@ -29,5 +35,10 @@
     "staleMinutesHelp": "Odczyt starszy niż ten na zakończenie dnia oznacza, że ​​dzień jest nieaktualny.",
     "testConnection": "Połączenie testowe",
     "unit": "Jednostka",
+    "unitMapSkip": "Pomijać",
+    "unitMapSource": "Imię w dzienniku",
+    "unitMapTable": "Jednostki dziennika (opcjonalnie)",
+    "unitMapTableHelp": "Potrzebne tylko wtedy, gdy jednostka dziennika solarlog musi być inaczej nazwana w rozliczeniu lub nie może być w ogóle dostarczona.",
+    "unitMapTarget": "Imię i nazwisko w rozliczeniu",
     "unitName": "Nazwa jednostki"
 }
