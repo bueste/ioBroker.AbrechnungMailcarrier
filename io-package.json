@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.1.1",
+        "version": "0.1.2",
         "news": {
+            "0.1.2": {
+                "en": "Fix: the button Test connection did nothing because the adapter did not declare that it receives messages (messagebox).",
+                "de": "Korrektur: Der Knopf Verbindung testen zeigte keine Reaktion, weil der Adapter nicht angab, dass er Nachrichten empfängt (messagebox)."
+            },
             "0.1.1": {
                 "en": "The server is entered as a host name (no URL), the API path is a separate field. New unit table to rename or leave out units of the solarlog journal. The connection test also works with an already saved token.",
                 "de": "Der Server wird als Hostname eingetragen (keine URL), der API-Pfad ist ein eigenes Feld. Neue Einheiten-Tabelle, um Einheiten des solarlog-Journals umzubenennen oder auszulassen. Der Verbindungstest funktioniert auch mit einem bereits gespeicherten Token.",
@@ -83,6 +87,7 @@
         "type": "energy",
         "tier": 3,
         "compact": true,
+        "messagebox": true,
         "connectionType": "cloud",
         "dataSource": "push",
         "adminUI": {

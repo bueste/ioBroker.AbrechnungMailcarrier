@@ -112,7 +112,7 @@ from the stored row.
 {
   "schema": 1,
   "source": "iobroker-solarlog",
-  "adapter_version": "0.1.1",
+  "adapter_version": "0.1.2",
   "meter_daily": [
     { "date": "2026-10-24", "meter": "WHG 1", "verbrauch_kwh": 10.5, "solarbezug_kwh": 4.0, "netzbezug_kwh": 6.5,
       "tarif_netz": 0.28, "tarif_solar": 0.20, "total_chf": 2.92, "methode": "integriert", "quality": "ok" }
