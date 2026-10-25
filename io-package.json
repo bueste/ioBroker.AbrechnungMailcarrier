@@ -1,0 +1,263 @@
+{
+    "common": {
+        "name": "abrechnungmailcarrier",
+        "version": "0.1.0",
+        "news": {
+            "0.1.0": {
+                "en": "Initial release: delivers the daily figures per apartment to the Abrechnung Mailcarrier web application over HTTPS. Sources: the local journal of iobroker.solarlog, or energy states of other adapters (e.g. Shelly meters and an inverter adapter).",
+                "de": "Erste Version: liefert die Tageswerte je Wohnung per HTTPS an die Webanwendung Abrechnung Mailcarrier. Quellen: das lokale Journal von iobroker.solarlog oder Energie-States anderer Adapter (z.B. Shelly-Zähler und ein Wechselrichter-Adapter).",
+                "ru": "Первая версия: передаёт суточные данные по квартирам в веб-приложение Abrechnung Mailcarrier по HTTPS. Источники: локальный журнал iobroker.solarlog или энергетические состояния других адаптеров (например, счётчики Shelly и адаптер инвертора).",
+                "pt": "Primeira versão: envia os valores diários por apartamento para a aplicação web Abrechnung Mailcarrier por HTTPS. Fontes: o diário local do iobroker.solarlog ou estados de energia de outros adaptadores (por exemplo, contadores Shelly e um adaptador de inversor).",
+                "nl": "Eerste versie: levert de dagwaarden per appartement via HTTPS aan de webapplicatie Abrechnung Mailcarrier. Bronnen: het lokale journaal van iobroker.solarlog of energiestatussen van andere adapters (bijv. Shelly-meters en een omvormeradapter).",
+                "fr": "Première version : transmet les valeurs journalières par appartement à l'application web Abrechnung Mailcarrier via HTTPS. Sources : le journal local d'iobroker.solarlog ou les états d'énergie d'autres adaptateurs (p. ex. compteurs Shelly et un adaptateur d'onduleur).",
+                "it": "Prima versione: invia i valori giornalieri per appartamento all'applicazione web Abrechnung Mailcarrier tramite HTTPS. Fonti: il registro locale di iobroker.solarlog o gli stati di energia di altri adattatori (ad es. contatori Shelly e un adattatore per inverter).",
+                "es": "Primera versión: envía los valores diarios por vivienda a la aplicación web Abrechnung Mailcarrier mediante HTTPS. Fuentes: el diario local de iobroker.solarlog o estados de energía de otros adaptadores (p. ej. contadores Shelly y un adaptador de inversor).",
+                "pl": "Pierwsza wersja: przesyła dobowe wartości dla mieszkań do aplikacji internetowej Abrechnung Mailcarrier przez HTTPS. Źródła: lokalny dziennik iobroker.solarlog lub stany energii innych adapterów (np. liczniki Shelly i adapter falownika).",
+                "uk": "Перша версія: передає добові значення по квартирах до вебзастосунку Abrechnung Mailcarrier через HTTPS. Джерела: локальний журнал iobroker.solarlog або енергетичні стани інших адаптерів (наприклад, лічильники Shelly та адаптер інвертора).",
+                "zh-cn": "首个版本：通过 HTTPS 将每套住宅的每日数据发送到 Abrechnung Mailcarrier 网络应用。数据源：iobroker.solarlog 的本地日志，或其他适配器的能量状态（例如 Shelly 电表和逆变器适配器）。"
+            }
+        },
+        "titleLang": {
+            "en": "Abrechnung Mailcarrier",
+            "de": "Abrechnung Mailcarrier",
+            "ru": "Abrechnung Mailcarrier",
+            "pt": "Abrechnung Mailcarrier",
+            "nl": "Abrechnung Mailcarrier",
+            "fr": "Abrechnung Mailcarrier",
+            "it": "Abrechnung Mailcarrier",
+            "es": "Abrechnung Mailcarrier",
+            "pl": "Abrechnung Mailcarrier",
+            "uk": "Abrechnung Mailcarrier",
+            "zh-cn": "Abrechnung Mailcarrier"
+        },
+        "desc": {
+            "en": "Delivers the daily consumption per apartment, split into own solar power and grid power, to the Abrechnung Mailcarrier billing web application over an authenticated HTTPS API.",
+            "de": "Liefert den Tagesverbrauch je Wohnung, aufgeteilt in eigenen Solarstrom und Netzstrom, über eine authentifizierte HTTPS-API an die Abrechnungs-Webanwendung Abrechnung Mailcarrier.",
+            "ru": "Передаёт суточное потребление по квартирам с разделением на собственную солнечную энергию и сетевую через защищённый HTTPS API в веб-приложение для расчётов Abrechnung Mailcarrier.",
+            "pt": "Envia o consumo diário por apartamento, dividido em energia solar própria e energia da rede, através de uma API HTTPS autenticada para a aplicação web de faturação Abrechnung Mailcarrier.",
+            "nl": "Levert het dagverbruik per appartement, verdeeld in eigen zonnestroom en netstroom, via een geauthenticeerde HTTPS-API aan de afrekenwebapplicatie Abrechnung Mailcarrier.",
+            "fr": "Transmet la consommation journalière par appartement, répartie entre énergie solaire propre et réseau, via une API HTTPS authentifiée à l'application web de facturation Abrechnung Mailcarrier.",
+            "it": "Invia il consumo giornaliero per appartamento, suddiviso in energia solare propria e rete, tramite un'API HTTPS autenticata all'applicazione web di fatturazione Abrechnung Mailcarrier.",
+            "es": "Envía el consumo diario por vivienda, dividido entre energía solar propia y de la red, mediante una API HTTPS autenticada a la aplicación web de facturación Abrechnung Mailcarrier.",
+            "pl": "Przesyła dobowe zużycie dla każdego mieszkania, podzielone na własną energię słoneczną i sieciową, przez uwierzytelniony interfejs HTTPS do aplikacji rozliczeniowej Abrechnung Mailcarrier.",
+            "uk": "Передає добове споживання по квартирах з розподілом на власну сонячну та мережеву енергію через автентифікований HTTPS API до вебзастосунку для розрахунків Abrechnung Mailcarrier.",
+            "zh-cn": "通过经过身份验证的 HTTPS API，将每套住宅的每日用电量（分为自有太阳能电力和电网电力）发送到 Abrechnung Mailcarrier 结算网络应用。"
+        },
+        "authors": [
+            "Stefan Bühler <iobroker@mailcarrier.ch>"
+        ],
+        "keywords": [
+            "abrechnung",
+            "billing",
+            "zev",
+            "solar",
+            "pv",
+            "shelly",
+            "solarlog",
+            "nebenkosten"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "abrechnungmailcarrier.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/bueste/ioBroker.AbrechnungMailcarrier/main/admin/abrechnungmailcarrier.png",
+        "readme": "https://github.com/bueste/ioBroker.AbrechnungMailcarrier/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "energy",
+        "tier": 3,
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ]
+    },
+    "native": {
+        "apiUrl": "https://abr.bronnenhuber.ch/api/v1",
+        "apiToken": "",
+        "sourceType": "solarlogJournal",
+        "journalStateId": "solarlog.0.Database.dailyJournal",
+        "snapshotTime": "23:58",
+        "staleMinutes": 60,
+        "meters": [],
+        "production": [],
+        "feedin": []
+    },
+    "protectedNative": [
+        "apiToken"
+    ],
+    "encryptedNative": [
+        "apiToken"
+    ],
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Server reachable and token accepted",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastDelivery",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Time of the last accepted delivery (ISO 8601)",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastDeliveredDate",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Newest day accepted by the server",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.pendingDays",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Days waiting for delivery",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastError",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Last error message",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.rejectedDates",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Days the server refused for their content",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "data",
+            "type": "channel",
+            "common": {
+                "name": "Local data"
+            },
+            "native": {}
+        },
+        {
+            "_id": "data.journal",
+            "type": "state",
+            "common": {
+                "role": "json",
+                "name": "Local journal of the daily figures (kept for 120 days)",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": "[]"
+            },
+            "native": {}
+        },
+        {
+            "_id": "data.snapshot",
+            "type": "state",
+            "common": {
+                "role": "json",
+                "name": "Counter readings at the last day closing (source counters)",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "control",
+            "type": "channel",
+            "common": {
+                "name": "Control"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.syncNow",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Deliver now",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.closeDayNow",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Close today now (source counters)",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}
