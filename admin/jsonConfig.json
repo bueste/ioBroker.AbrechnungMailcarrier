@@ -341,6 +341,276 @@
                     ]
                 }
             }
+        },
+        "_flow": {
+            "type": "panel",
+            "label": "flowTab",
+            "items": {
+                "_flowIntro": {
+                    "type": "staticText",
+                    "text": "flowIntro",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                },
+                "_flowHeadState": {
+                    "type": "header",
+                    "text": "flowColState",
+                    "size": 5,
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowHeadMeaning": {
+                    "type": "header",
+                    "text": "flowColMeaning",
+                    "size": 5,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState0": {
+                    "type": "staticText",
+                    "text": "solarlog.0.status.yieldday",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning0": {
+                    "type": "staticText",
+                    "text": "flowProduction",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState1": {
+                    "type": "staticText",
+                    "text": "solarlog.0.status.consyieldday",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning1": {
+                    "type": "staticText",
+                    "text": "flowConsumption",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState2": {
+                    "type": "staticText",
+                    "text": "solarlog.0.status.intradayFeedinWh",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning2": {
+                    "type": "staticText",
+                    "text": "flowFeedin",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState3": {
+                    "type": "staticText",
+                    "text": "solarlog.0.status.intradaySelfConsumedWh\nsolarlog.0.status.intradayGridDrawWh",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning3": {
+                    "type": "staticText",
+                    "text": "flowSplit",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState4": {
+                    "type": "staticText",
+                    "text": "solarlog.0.INV.<name>.daysum",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning4": {
+                    "type": "staticText",
+                    "text": "flowUnitConsumption",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState5": {
+                    "type": "staticText",
+                    "text": "solarlog.0.INV.<name>.yieldtotal",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning5": {
+                    "type": "staticText",
+                    "text": "flowUnitMeter",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState6": {
+                    "type": "staticText",
+                    "text": "solarlog.0.status.intradayCoveredSeconds",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning6": {
+                    "type": "staticText",
+                    "text": "flowMethod",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowState7": {
+                    "type": "staticText",
+                    "text": "solarlog.0.status.intradayLastPollTs",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "style": {
+                        "fontFamily": "monospace",
+                        "fontSize": 13,
+                        "whiteSpace": "pre-line"
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 5,
+                    "xl": 5
+                },
+                "_flowMeaning7": {
+                    "type": "staticText",
+                    "text": "flowQuality",
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 7,
+                    "lg": 7,
+                    "xl": 7
+                },
+                "_flowTariffs": {
+                    "type": "staticText",
+                    "text": "flowTariffs",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'solarlogJournal'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                },
+                "_flowCounters": {
+                    "type": "staticText",
+                    "text": "flowCountersNote",
+                    "newLine": true,
+                    "hidden": "data.sourceType !== 'counters'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                }
+            }
         }
     }
 }

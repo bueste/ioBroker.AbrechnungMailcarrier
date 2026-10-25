@@ -16,8 +16,12 @@ const pkg = require("./package.json");
 
 /** Retry delay after a network or server problem. */
 const RETRY_MS = 10 * 60 * 1000;
-/** Even when nothing is new, the server is asked this often what it lacks (gap repair, restored database). */
-const HEARTBEAT_MS = 6 * 60 * 60 * 1000;
+/**
+ * Even when nothing is new, the server is asked this often what it lacks (gap repair, restored database). The
+ * request is also the sign of life both sides watch: the server alarms after 2 hours without contact, the
+ * monitoring on the ioBroker side after 1 hour.
+ */
+const HEARTBEAT_MS = 10 * 60 * 1000;
 /** A change of the source journal is delivered after this pause, so several changes lead to one request. */
 const DEBOUNCE_MS = 5000;
 
@@ -135,6 +139,9 @@ class AbrechnungMailcarrier extends utils.Adapter {
     async setInfo(info) {
         if (info.connection !== undefined) {
             await this.setState("info.connection", info.connection, true);
+        }
+        if (info.lastContact !== undefined) {
+            await this.setState("info.lastContact", info.lastContact, true);
         }
         if (info.lastDelivery !== undefined) {
             await this.setState("info.lastDelivery", info.lastDelivery, true);

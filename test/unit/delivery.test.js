@@ -58,6 +58,19 @@ describe("delivery", () => {
         expect(info.lastDelivery).to.be.a("string");
     });
 
+    it("notes every successful contact with the server, also when there is nothing to deliver", async () => {
+        const api = fakeApi({ status: ok({ tariffs: [], present_meter_dates: { "WHG 1": ["2026-10-01"] }, present_building_dates: ["2026-10-01"] }) });
+        const { delivery, info } = setup([day("2026-10-01")], api);
+        await delivery.sync();
+        expect(Date.parse(info.lastContact)).to.be.closeTo(Date.now(), 5000);
+    });
+
+    it("does not note a contact when the server cannot be reached", async () => {
+        const { delivery, info } = setup([day("2026-10-20")], fakeApi({ status: bad("transient") }));
+        await delivery.sync();
+        expect(info.lastContact).to.equal(undefined);
+    });
+
     it("takes the tariff from the server's status", async () => {
         const api = fakeApi();
         await setup([day("2026-10-20")], api).delivery.sync();

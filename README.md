@@ -23,8 +23,11 @@ Shelly / inverter  --energy states-->  AbrechnungMailcarrier  --HTTPS-->  web ap
    run, and nothing the server already holds is overwritten with older local values. Only the two most
    recent days are always repeated, so a late correction arrives.
 
-Delivery runs when the source has new data, 10 seconds after start, every 6 hours as a safety net, and every
-10 minutes while the server cannot be reached.
+Delivery runs when the source has new data, 10 seconds after start, every 10 minutes as a safety net (the
+status request is also the sign of life, see `info.lastContact`) and every 10 minutes while the server cannot
+be reached. The server alarms (mail) after 2 hours without contact; a monitoring script in the ioBroker should
+alarm after 1 hour. The tab **Data flow** in the instance settings lists which Solar-Log data points are
+delivered as which values.
 
 ## Sources
 
@@ -112,7 +115,7 @@ from the stored row.
 {
   "schema": 1,
   "source": "iobroker-solarlog",
-  "adapter_version": "0.1.2",
+  "adapter_version": "0.1.3",
   "meter_daily": [
     { "date": "2026-10-24", "meter": "WHG 1", "verbrauch_kwh": 10.5, "solarbezug_kwh": 4.0, "netzbezug_kwh": 6.5,
       "tarif_netz": 0.28, "tarif_solar": 0.20, "total_chf": 2.92, "methode": "integriert", "quality": "ok" }
@@ -137,6 +140,14 @@ npm run check             # type check
 ```
 
 ## Changelog
+
+### 0.1.3
+
+- Status request every 10 minutes as sign of life, new state `info.lastContact`. New tab Data flow.
+
+### 0.1.2
+
+- Fix: button Test connection (messagebox).
 
 ### 0.1.0
 

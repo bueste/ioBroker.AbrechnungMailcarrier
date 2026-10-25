@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "news": {
+            "0.1.3": {
+                "en": "The server is asked every 10 minutes (sign of life, new state info.lastContact) so that both sides can alarm when the connection is lost. New tab Data flow shows which Solar-Log data points are delivered as which values.",
+                "de": "Der Server wird alle 10 Minuten gefragt (Lebenszeichen, neuer State info.lastContact), damit beide Seiten bei Verbindungsverlust alarmieren können. Neuer Reiter Datenfluss zeigt, welche Datenpunkte des Solar-Log als welche Werte geliefert werden."
+            },
             "0.1.2": {
                 "en": "Fix: the button Test connection did nothing because the adapter did not declare that it receives messages (messagebox).",
                 "de": "Korrektur: Der Knopf Verbindung testen zeigte keine Reaktion, weil der Adapter nicht angab, dass er Nachrichten empfängt (messagebox)."
@@ -143,6 +147,19 @@
                 "read": true,
                 "write": false,
                 "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastContact",
+            "type": "state",
+            "common": {
+                "role": "date",
+                "name": "Last successful contact with the server",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
             },
             "native": {}
         },
