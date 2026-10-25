@@ -75,7 +75,7 @@ always exactly the consumption of the unit. Notes:
 
 | Setting | Meaning |
 |---|---|
-| Server | host name only, e.g. `abr.bronnenhuber.ch`; the connection is always HTTPS (plain HTTP is accepted for localhost only) |
+| Server | host name only, e.g. `abr.mailcarrier.ch`; the connection is always HTTPS (plain HTTP is accepted for localhost only) |
 | API path | `/api/v1`, normally not changed |
 | API token | `abrk_...`, created per client in the Administration area of the web application (Clients, tab Access), shown once, can be revoked; stored encrypted |
 | Source | journal of iobroker.solarlog, or energy states |

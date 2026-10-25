@@ -109,7 +109,7 @@
         ]
     },
     "native": {
-        "host": "abr.bronnenhuber.ch",
+        "host": "abr.mailcarrier.ch",
         "apiPath": "/api/v1",
         "apiToken": "",
         "sourceType": "solarlogJournal",
