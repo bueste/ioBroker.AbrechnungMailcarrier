@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.1.3",
+        "version": "0.1.4",
         "news": {
+            "0.1.4": {
+                "en": "The state of the current day so far (provisional) is delivered every 15 minutes together with the journal of the solarlog adapter, so the server holds a recent state even if the ioBroker fails before the nightly closing. The final day replaces it.",
+                "de": "Der Stand des laufenden Tages (vorläufig) wird zusammen mit dem Journal des solarlog-Adapters alle 15 Minuten geliefert, damit der Server auch dann einen aktuellen Stand hat, wenn der ioBroker vor dem nächtlichen Abschluss ausfällt. Der endgültige Tag ersetzt ihn."
+            },
             "0.1.3": {
                 "en": "The server is asked every 10 minutes (sign of life, new state info.lastContact) so that both sides can alarm when the connection is lost. New tab Data flow shows which Solar-Log data points are delivered as which values.",
                 "de": "Der Server wird alle 10 Minuten gefragt (Lebenszeichen, neuer State info.lastContact), damit beide Seiten bei Verbindungsverlust alarmieren können. Neuer Reiter Datenfluss zeigt, welche Datenpunkte des Solar-Log als welche Werte geliefert werden."

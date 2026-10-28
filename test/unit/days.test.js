@@ -55,6 +55,11 @@ describe("parseSolarlogJournal", () => {
         expect(d.method).to.equal("tagesnetto");
         expect(d.quality).to.equal("veraltet");
     });
+
+    it("passes the quality vorlaeufig of an intraday snapshot through", () => {
+        const raw = JSON.stringify([{ date: "2026-10-24", datenqualitaet: "vorlaeufig", meterRows: [meterRow({})] }]);
+        expect(parseSolarlogJournal(raw).days[0].quality).to.equal("vorlaeufig");
+    });
 });
 
 describe("mergeDays", () => {

@@ -35,7 +35,10 @@ delivered as which values.
 
 The solarlog adapter computes the split itself (including the intraday-integrated method) and writes the
 result of every night into the state `Database.dailyJournal` (a JSON list of `{ date, meterRows, buildingRow }`).
-This adapter imports that state and delivers it. The state to read is configurable
+Since solarlog 3.1.0 the current day is also written every 15 minutes with `datenqualitaet = vorlaeufig`; the
+night replaces it. This adapter imports that state and delivers it, so the server holds the state of the day
+so far (quality `vorlaeufig`) even if the ioBroker fails before the night. If the night never happens, the
+day stays `vorlaeufig` on the server and raises its alarm. The state to read is configurable
 (default `solarlog.0.Database.dailyJournal`).
 
 ### Energy states of other adapters
@@ -140,6 +143,10 @@ npm run check             # type check
 ```
 
 ## Changelog
+
+### 0.1.4
+
+- Delivers the provisional state of the current day (`vorlaeufig`, every 15 minutes with solarlog 3.1.0). Needs the web application with quality `vorlaeufig`.
 
 ### 0.1.3
 
