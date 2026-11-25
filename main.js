@@ -30,6 +30,11 @@ const HEARTBEAT_MS = 10 * 60 * 1000;
 /** A change of the source journal is delivered after this pause, so several changes lead to one request. */
 const DEBOUNCE_MS = 5000;
 
+/** @param {any} v a table of the instance configuration @returns {any[]} */
+function asRows(v) {
+    return Array.isArray(v) ? v.filter((r) => r && typeof r === "object") : [];
+}
+
 class AbrechnungMailcarrier extends utils.Adapter {
     /**
      * @param {Partial<utils.AdapterOptions>} [options]
@@ -204,6 +209,25 @@ class AbrechnungMailcarrier extends utils.Adapter {
             version: pkg.version,
             setState: (id, val, name, write) =>
                 this.mbusSetState(id, val, name, write),
+            tables: {
+                read: () => ({
+                    moxas: asRows(this.config.mbusMoxas),
+                    units: asRows(this.config.mbusUnits),
+                    routers: asRows(this.config.mbusRouters),
+                }),
+                write: async (t) => {
+                    await this.extendForeignObjectAsync(
+                        `system.adapter.${this.namespace}`,
+                        {
+                            native: {
+                                mbusMoxas: t.moxas,
+                                mbusUnits: t.units,
+                                mbusRouters: t.routers,
+                            },
+                        },
+                    );
+                },
+            },
         });
         await this.subscribeStatesAsync("mbus.*.settings.*");
         this.mbus.start();

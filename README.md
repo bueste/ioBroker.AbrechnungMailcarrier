@@ -164,6 +164,25 @@ The telegram parser (`lib/mbus/parse.js`) is verified against real telegrams of 
 IST water meters). Setting the clock of a meter (command *timesync*) is only reported as successful if the meter
 clock really changed afterwards.
 
+### Tables in the instance configuration (since 0.3.0)
+
+Moxas, apartments and routers can be entered in the tab "M-Bus Zähler" as well as in the web application. The
+column "Anlage" (a1 to a4) tells which token (client) a row belongs to. The adapter compares the tables with the
+web application every minute, using the state both sides agreed on last time (`state.json`, `cfgSnap`):
+
+- a row changed or added here goes to the web application (`config_push` in the delivery, answered with `config_result`);
+- a row changed in the web application and not here is taken over into the table;
+- a row removed here is deleted there (an empty table is never taken as "delete everything"; apartments with assigned meters are refused);
+- a row the web application refuses stays in the table and is reported once per hour in the log.
+
+When the tables change, the adapter writes them into its own configuration, which restarts the instance once.
+
+**COM device instead of TCP.** A Moxa in real-COM mode (driver maps it to e.g. `/dev/ttyr00`) or a USB serial
+adapter (`/dev/ttyUSB0`) can be used by entering the device in the column "COM-Gerät". The adapter opens it with
+`socat` (`sudo apt install socat`), 2400 baud 8E1 unless set otherwise in the web application. The user of the
+instance needs access to the device (group `dialout`). Firmware care needs a network address and is skipped for
+a COM device.
+
 ### Moxa firmware care
 
 With the Moxa web password in the M-Bus tab the adapter looks after the firmware of the serial servers: weekly check
@@ -193,6 +212,11 @@ npm run check             # type check
 ```
 
 ## Changelog
+
+### 0.3.0
+
+- Moxas, apartments and routers can be entered in the instance configuration; two-way comparison with the web application
+- COM device as connection of a Moxa
 
 ### 0.2.0
 

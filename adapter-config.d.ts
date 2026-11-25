@@ -11,6 +11,9 @@ declare global {
             apiPath: string;
             apiToken: string;
             mbusEnabled: boolean;
+            mbusMoxas: Array<Record<string, any>>;
+            mbusUnits: Array<Record<string, any>>;
+            mbusRouters: Array<Record<string, any>>;
             mbusToken1: string;
             mbusToken2: string;
             mbusToken3: string;
