@@ -12,6 +12,11 @@ const {
     serializeJournal,
 } = require("./lib/days");
 const { applyUnitMap, buildBaseUrl } = require("./lib/config");
+const { MbusManager } = require("./lib/mbus/manager");
+const { MoxaUpdater } = require("./lib/moxa/updater");
+const { RouterUpdater } = require("./lib/mikrotik/updater");
+const { ensureKey } = require("./lib/mikrotik/ssh");
+const { Store } = require("./lib/mbus/store");
 const pkg = require("./package.json");
 
 /** Retry delay after a network or server problem. */
@@ -51,6 +56,10 @@ class AbrechnungMailcarrier extends utils.Adapter {
         /** @type {ReturnType<typeof parseCounterConfig>["config"]|null} */
         this.counterConfig = null;
         this.snapshotTime = { hour: 23, minute: 58 };
+        /** @type {MbusManager|null} */
+        this.mbus = null;
+        /** @type {Set<string>} */
+        this.mbusObjects = new Set();
     }
 
     async onReady() {
@@ -58,10 +67,21 @@ class AbrechnungMailcarrier extends utils.Adapter {
 
         const { baseUrl, error } = buildBaseUrl(this.config);
         const token = String(this.config.apiToken || "").trim();
+        const mbusOn = this.config.mbusEnabled === true;
+        if (mbusOn) {
+            // the meter reading runs on its own, with or without the solar delivery below
+            await this.startMbus(baseUrl, error);
+        }
         if (error || !token) {
-            this.log.error(
-                `${error || "API token missing."} Please check server and API token in the instance configuration.`,
-            );
+            if (!mbusOn) {
+                this.log.error(
+                    `${error || "API token missing."} Please check server and API token in the instance configuration.`,
+                );
+            } else {
+                this.log.info(
+                    "No token for the solar delivery configured: only the M-Bus meter reading runs.",
+                );
+            }
             return;
         }
         this.api = new ApiClient({
@@ -120,6 +140,108 @@ class AbrechnungMailcarrier extends utils.Adapter {
         await this.subscribeStatesAsync("control.*");
         this.log.info(`Started: source ${this.sourceType}, API ${baseUrl}`);
         this.scheduleSync(10 * 1000);
+    }
+
+    // ------------------------------------------------------------------ M-Bus
+
+    /**
+     * Starts the M-Bus meter reading: one API token per client (up to four), the configuration comes from the web
+     * application, the readings go to disk first and then to the server.
+     *
+     * @param {string} baseUrl
+     * @param {string} error
+     */
+    async startMbus(baseUrl, error) {
+        const clients = [];
+        for (let i = 1; i <= 4; i++) {
+            const t = String(this.config[`mbusToken${i}`] || "").trim();
+            if (t && !error) {
+                clients.push({
+                    label: `a${i}`,
+                    api: new ApiClient({
+                        baseUrl,
+                        token: t,
+                        userAgent: `iobroker.abrechnungmailcarrier/${pkg.version} mbus`,
+                    }),
+                });
+            }
+        }
+        if (clients.length === 0) {
+            this.log.error(
+                `${error || "No M-Bus token entered."} Please check server and the M-Bus tokens in the instance configuration.`,
+            );
+            return;
+        }
+        this.mbusObjects = new Set();
+        const dir = utils.getAbsoluteInstanceDataDir(this);
+        const moxaPassword = String(this.config.moxaPassword || "").trim();
+        if (!moxaPassword) {
+            this.log.info(
+                "No Moxa password configured: the firmware of the Moxa is not looked after.",
+            );
+        }
+        const sshKey = await ensureKey(dir);
+        if (!sshKey.ok) {
+            this.log.warn(
+                `No SSH key for the MikroTik routers (${sshKey.error}): router updates are off.`,
+            );
+        }
+        this.mbus = new MbusManager({
+            log: this.log,
+            clients,
+            routerUpdater: sshKey.ok
+                ? new RouterUpdater({ log: this.log, dir })
+                : null,
+            sshPublicKey: sshKey.ok ? sshKey.publicKey : null,
+            updater: moxaPassword
+                ? new MoxaUpdater({
+                      log: this.log,
+                      password: moxaPassword,
+                      dir,
+                  })
+                : null,
+            store: new Store(dir),
+            version: pkg.version,
+            setState: (id, val, name, write) =>
+                this.mbusSetState(id, val, name, write),
+        });
+        await this.subscribeStatesAsync("mbus.*.settings.*");
+        this.mbus.start();
+        this.log.info(`M-Bus: ${clients.length} client(s), data in ${dir}`);
+    }
+
+    /**
+     * Writes a state of the M-Bus tree, creating the object on first use.
+     *
+     * @param {string} id
+     * @param {any} val
+     * @param {string} [name]
+     * @param {boolean} [write]
+     */
+    async mbusSetState(id, val, name, write) {
+        if (val === null || val === undefined || this.unloading) {
+            return;
+        }
+        if (!this.mbusObjects.has(id)) {
+            await this.setObjectNotExistsAsync(id, {
+                type: "state",
+                common: {
+                    name: name || id,
+                    type:
+                        typeof val === "number"
+                            ? "number"
+                            : typeof val === "boolean"
+                              ? "boolean"
+                              : "string",
+                    role: "state",
+                    read: true,
+                    write: write === true,
+                },
+                native: {},
+            });
+            this.mbusObjects.add(id);
+        }
+        await this.setState(id, val, true);
     }
 
     // ------------------------------------------------------------------ local state
@@ -299,6 +421,10 @@ class AbrechnungMailcarrier extends utils.Adapter {
         if (!state) {
             return;
         }
+        if (this.mbus && id.startsWith(`${this.namespace}.mbus.`)) {
+            this.onMbusSettingChange(id, state);
+            return;
+        }
         if (id === this.journalStateId) {
             this.scheduleSync(DEBOUNCE_MS);
             return;
@@ -324,6 +450,40 @@ class AbrechnungMailcarrier extends utils.Adapter {
                     );
             }
         }
+    }
+
+    /**
+     * A user changed an interval in the M-Bus tree: it is reported to the web application, which keeps the leading
+     * copy (and refuses it if somebody changed it there in the meantime).
+     *
+     * @param {string} id
+     * @param {ioBroker.State} state
+     */
+    onMbusSettingChange(id, state) {
+        if (state.ack) {
+            return;
+        }
+        const m =
+            /\.mbus\.([^.]+)\.settings\.(readMinutes|scanDays|timesyncDays|timesyncEnabled)$/.exec(
+                id,
+            );
+        if (!m) {
+            return;
+        }
+        const keys = {
+            readMinutes: "read_minutes",
+            scanDays: "scan_days",
+            timesyncDays: "timesync_days",
+            timesyncEnabled: "timesync_enabled",
+        };
+        const val =
+            m[2] === "timesyncEnabled" ? state.val === true : Number(state.val);
+        if (this.mbus) {
+            this.mbus.changeSettings(m[1], { [keys[m[2]]]: val });
+        }
+        this.log.info(
+            `M-Bus ${m[1]}: ${m[2]} = ${val} will be sent to the server`,
+        );
     }
 
     /**
@@ -373,6 +533,9 @@ class AbrechnungMailcarrier extends utils.Adapter {
     onUnload(callback) {
         try {
             this.unloading = true;
+            if (this.mbus) {
+                this.mbus.stop();
+            }
             if (this.syncTimer) {
                 clearTimeout(this.syncTimer);
             }

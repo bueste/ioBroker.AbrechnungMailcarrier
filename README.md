@@ -132,6 +132,56 @@ from the stored row.
 and answers 200 (stored, idempotent), 401 (token), 422 (content refused, nothing stored), 429/5xx (retry later).
 A refused day is isolated: the other days of the same run are still delivered.
 
+## M-Bus meter reading (since 0.2.0)
+
+Reads cold/hot water and heat meters (M-Bus, EN 13757) through a Moxa NPort in **TCP server mode, raw**
+(2400 baud, 8E1, set in the Moxa) and delivers the readings to the web application. Enable it on the tab
+*M-Bus meters* and enter one API token per site (client), up to four. The server and API path are those of the
+Connection tab; the solar delivery above is optional and independent.
+
+What lives where:
+
+- **Web application** (leading): the Moxa addresses, the three intervals, the assignment of meters to apartments
+  and the alarms. It also queues commands (test the connection, scan the bus, set the clock).
+- **Adapter**: fetches that configuration every minute, reads the expected meters on the quarter-hour grid
+  (default every 15 minutes), scans the bus 0 to 250 when due (default every 30 days) and runs the commands.
+- **Disk** of the ioBroker host (instance data folder): `archive/mbus-YYYY-MM.jsonl` keeps every reading,
+  `pending.jsonl` holds the packages not yet accepted by the server (survives a restart and an outage, delivered in
+  order), `rejected.jsonl` the ones the server refused for good.
+
+States (per site `a1` .. `a4`):
+
+| State | Meaning |
+|---|---|
+| `mbus.a1.units.<unit>.<kind>.value / unit / value2 / meterId / lastRead` | reading of an assigned meter (kinds: kaltwasser, warmwasser, waerme); heat: kWh and volume as value2 |
+| `mbus.a1.unassigned.<meterId>.*` | meters not yet assigned to an apartment |
+| `mbus.a1.gateways.<id>.reachable / lastPoll / lastError` | state of each Moxa |
+| `mbus.a1.settings.readMinutes / scanDays / timesyncDays / timesyncEnabled` | intervals, writable: a change is sent to the server (refused if somebody changed it there meanwhile) |
+| `mbus.a1.alarms.count / text` | open warnings and critical findings of the server, for your own notification script |
+| `mbus.a1.info.pending` | packages waiting for delivery |
+
+The telegram parser (`lib/mbus/parse.js`) is verified against real telegrams of the installed meters (RKE heat meters,
+IST water meters). Setting the clock of a meter (command *timesync*) is only reported as successful if the meter
+clock really changed afterwards.
+
+### Moxa firmware care
+
+With the Moxa web password in the M-Bus tab the adapter looks after the firmware of the serial servers: weekly check
+(model and version from the web console, newest version from moxa.com with its SHA-512), flashing only at night
+(01:00 to 02:45) and only if the web application allows it for that Moxa, then a check that the device is back
+with the new version and an open serial port. A failure raises a critical finding and the adapter tries again only
+after a week. Pages like restart, reset or logout are never requested. The state per Moxa is in
+`mbus.a1.gateways.<id>.moxaModel / moxaFirmware / moxaFirmwareStatus`.
+
+### MikroTik router updates
+
+The adapter keeps its own SSH key pair in the data folder (`ssh/id_ed25519`) and reports the public key to the web
+application, which shows how to import it on a router. The routers, their update channel and the update time (weekdays,
+start time, window) are set in the web application. The adapter looks at the routers daily and, inside the window,
+installs RouterOS (and on request the RouterBOARD firmware) after a backup, and verifies that the router is back with
+the new version. States: `mbus.a1.routers.<id>.version / latest / status`. Needs the OpenSSH client (`ssh`, `scp`,
+`ssh-keygen`) on the host.
+
 ## Development
 
 ```
@@ -143,6 +193,10 @@ npm run check             # type check
 ```
 
 ## Changelog
+
+### 0.2.0
+
+- New: M-Bus meter reading through a Moxa serial server, local archive, delivery with retry, configuration and alarms from the web application. The solar delivery is optional.
 
 ### 0.1.4
 

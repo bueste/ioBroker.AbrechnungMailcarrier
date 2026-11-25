@@ -611,6 +611,90 @@
                     "xl": 12
                 }
             }
+        },
+        "_mbus": {
+            "type": "panel",
+            "label": "mbusTab",
+            "items": {
+                "_mbusIntro": {
+                    "type": "staticText",
+                    "text": "mbusIntro",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                },
+                "mbusEnabled": {
+                    "type": "checkbox",
+                    "label": "mbusEnabled",
+                    "help": "mbusEnabledHelp",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                },
+                "mbusToken1": {
+                    "type": "password",
+                    "label": "mbusToken1",
+                    "help": "mbusTokenHelp",
+                    "newLine": true,
+                    "hidden": "!data.mbusEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "mbusToken2": {
+                    "type": "password",
+                    "label": "mbusToken2",
+                    "newLine": true,
+                    "hidden": "!data.mbusEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "mbusToken3": {
+                    "type": "password",
+                    "label": "mbusToken3",
+                    "newLine": true,
+                    "hidden": "!data.mbusEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "mbusToken4": {
+                    "type": "password",
+                    "label": "mbusToken4",
+                    "newLine": true,
+                    "hidden": "!data.mbusEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "moxaPassword": {
+                    "type": "password",
+                    "label": "moxaPassword",
+                    "help": "moxaPasswordHelp",
+                    "newLine": true,
+                    "hidden": "!data.mbusEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6
+                }
+            }
         }
     }
 }

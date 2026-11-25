@@ -1,6 +1,6 @@
 {
     "name": "iobroker.abrechnungmailcarrier",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "description": "Delivers the daily consumption figures of apartments (solar/grid split) from ioBroker to the Abrechnung Mailcarrier billing web application over an authenticated HTTPS API.",
     "author": "Stefan Bühler <iobroker@mailcarrier.ch>",
     "homepage": "https://github.com/bueste/ioBroker.AbrechnungMailcarrier",
@@ -15,7 +15,10 @@
         "pv",
         "shelly",
         "solarlog",
-        "nebenkosten"
+        "nebenkosten",
+        "m-bus",
+        "mbus",
+        "wasserzaehler"
     ],
     "repository": {
         "type": "git",

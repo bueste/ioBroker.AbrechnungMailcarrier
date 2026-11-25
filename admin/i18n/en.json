@@ -52,5 +52,16 @@
     "unitMapTable": "Units of the journal (optional)",
     "unitMapTableHelp": "Only needed if a unit of the solarlog journal must be called differently in the billing, or must not be delivered at all.",
     "unitMapTarget": "Name in the billing",
-    "unitName": "Unit name"
+    "unitName": "Unit name",
+    "mbusTab": "M-Bus meters",
+    "mbusIntro": "Reads cold/hot water and heat meters through a Moxa serial server (TCP, raw mode) and delivers the readings to the web application. The Moxa addresses, intervals and the assignment of meters to apartments are maintained in the web application under Zähler (M-Bus) and transferred here. All readings are stored on the disk of this host first (adapter data folder, archive/) and delivered later if the connection fails.",
+    "mbusEnabled": "Enable M-Bus meter reading",
+    "mbusEnabledHelp": "Server and API path are the same as on the Connection tab. The solar delivery is independent of this.",
+    "mbusToken1": "API token site 1",
+    "mbusToken2": "API token site 2 (optional)",
+    "mbusToken3": "API token site 3 (optional)",
+    "mbusToken4": "API token site 4 (optional)",
+    "mbusTokenHelp": "One token per site (client). It is created in the web application under Administration, API access; when a new site is created on the M-Bus tab it is shown once. The data points appear under mbus.a1, mbus.a2 ...",
+    "moxaPassword": "Moxa web password (all Moxa)",
+    "moxaPasswordHelp": "Password of the NPort web console (15 characters at most). The adapter checks the firmware weekly and installs new versions at night between 01:00 and 02:45 if the web application allows it for that Moxa. Leave empty to switch the firmware care off. The password stays encrypted on this host."
 }

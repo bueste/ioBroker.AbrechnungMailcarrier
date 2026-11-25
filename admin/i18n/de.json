@@ -52,5 +52,16 @@
     "unitMapTable": "Einheiten des Journals (optional)",
     "unitMapTableHelp": "Nur nötig, wenn eine Einheit des solarlog-Journals in der Abrechnung anders heissen oder gar nicht geliefert werden soll.",
     "unitMapTarget": "Name in der Abrechnung",
-    "unitName": "Name der Einheit"
+    "unitName": "Name der Einheit",
+    "mbusTab": "M-Bus Zähler",
+    "mbusIntro": "Liest Kalt-/Warmwasser- und Wärmezähler über einen Moxa-Seriell-Server (TCP, Raw-Modus) und liefert die Stände an die Webanwendung. Die Moxa-Adressen, Intervalle und die Zuteilung der Zähler zu den Wohneinheiten werden in der Webanwendung unter Zähler (M-Bus) gepflegt und hierher übertragen. Alle Stände werden zuerst auf der Platte dieses Rechners gespeichert (Ordner des Adapters, archive/) und bei Ausfall der Verbindung nachgeliefert.",
+    "mbusEnabled": "M-Bus-Zählererfassung aktivieren",
+    "mbusEnabledHelp": "Server und API-Pfad sind die gleichen wie auf dem Reiter Verbindung. Die Solar-Lieferung ist unabhängig davon.",
+    "mbusToken1": "API-Token Anlage 1",
+    "mbusToken2": "API-Token Anlage 2 (optional)",
+    "mbusToken3": "API-Token Anlage 3 (optional)",
+    "mbusToken4": "API-Token Anlage 4 (optional)",
+    "mbusTokenHelp": "Pro Anlage (Mandant) ein Token. Er wird in der Webanwendung unter Administration, API-Zugang erstellt; beim Anlegen einer neuen Anlage im Reiter Zähler (M-Bus) wird er einmal angezeigt. Die Datenpunkte erscheinen unter mbus.a1, mbus.a2 ...",
+    "moxaPassword": "Moxa Web-Passwort (alle Moxa)",
+    "moxaPasswordHelp": "Passwort der Web-Konsole der Moxa NPort (höchstens 15 Zeichen). Damit prüft der Adapter wöchentlich die Firmware und spielt neue Versionen nachts zwischen 01:00 und 02:45 ein, wenn das in der Webanwendung für den Moxa erlaubt ist. Leer lassen schaltet die Firmware-Pflege aus. Das Passwort bleibt verschlüsselt auf diesem Rechner."
 }

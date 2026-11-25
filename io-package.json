@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.1.4",
+        "version": "0.2.0",
         "news": {
+            "0.2.0": {
+                "en": "New: M-Bus meter reading. Cold/hot water and heat meters behind a Moxa serial server are read every 15 minutes, stored on the disk of the ioBroker host and delivered to the web application, which holds the Moxa addresses, the intervals and the assignment of meters to apartments and raises alarms. The solar delivery is now optional. The firmware of the Moxa serial servers is checked weekly and updated at night. MikroTik routers are updated automatically at a time set in the web application.",
+                "de": "Neu: M-Bus-Zählererfassung. Kalt-/Warmwasser- und Wärmezähler hinter einem Moxa-Seriell-Server werden alle 15 Minuten gelesen, auf der Platte des ioBroker-Rechners gespeichert und an die Webanwendung geliefert. Diese verwaltet die Moxa-Adressen, die Intervalle und die Zuteilung der Zähler zu den Wohnungen und löst Alarme aus. Die Solar-Lieferung ist jetzt optional. Die Firmware der Moxa-Seriell-Server wird wöchentlich geprüft und nachts aktualisiert. MikroTik-Router werden zu einer in der Webanwendung einstellbaren Zeit automatisch aktualisiert."
+            },
             "0.1.4": {
                 "en": "The state of the current day so far (provisional) is delivered every 15 minutes together with the journal of the solarlog adapter, so the server holds a recent state even if the ioBroker fails before the nightly closing. The final day replaces it.",
                 "de": "Der Stand des laufenden Tages (vorläufig) wird zusammen mit dem Journal des solarlog-Adapters alle 15 Minuten geliefert, damit der Server auch dann einen aktuellen Stand hat, wenn der ioBroker vor dem nächtlichen Abschluss ausfällt. Der endgültige Tag ersetzt ihn."
@@ -123,13 +127,29 @@
         "meters": [],
         "production": [],
         "feedin": [],
-        "unitMap": []
+        "unitMap": [],
+        "mbusEnabled": false,
+        "mbusToken1": "",
+        "mbusToken2": "",
+        "mbusToken3": "",
+        "mbusToken4": "",
+        "moxaPassword": ""
     },
     "protectedNative": [
-        "apiToken"
+        "apiToken",
+        "mbusToken1",
+        "mbusToken2",
+        "mbusToken3",
+        "mbusToken4",
+        "moxaPassword"
     ],
     "encryptedNative": [
-        "apiToken"
+        "apiToken",
+        "mbusToken1",
+        "mbusToken2",
+        "mbusToken3",
+        "mbusToken4",
+        "moxaPassword"
     ],
     "objects": [],
     "instanceObjects": [

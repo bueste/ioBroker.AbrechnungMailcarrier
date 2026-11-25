@@ -10,6 +10,12 @@ declare global {
             host: string;
             apiPath: string;
             apiToken: string;
+            mbusEnabled: boolean;
+            mbusToken1: string;
+            mbusToken2: string;
+            mbusToken3: string;
+            mbusToken4: string;
+            moxaPassword: string;
             sourceType: "solarlogJournal" | "counters";
             journalStateId: string;
             unitMap: { source: string; target: string; skip: boolean }[];
