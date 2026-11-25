@@ -27,7 +27,7 @@ describe("configsync", () => {
         const p = sync.plan(1, empty(), null, cfg);
         expect(p.push).to.equal(null);
         const rows = sync.resolve(1, cfg, p.pending, []);
-        expect(rows.moxas[0]).to.include({ site: "1", id: 1, name: "Keller", host: "10.0.0.5", port: 4001, device: "", enabled: true, fwAuto: true });
+        expect(rows.moxas[0]).to.include({ site: "1", id: 1, name: "Keller", host: "10.0.0.5", port: 4001, comPort: "", enabled: true, fwAuto: true });
         expect(rows.units.map((u) => [u.name, u.general])).to.deep.equal([["WHG 1", false], ["Allgemein 1", true]]);
         expect(rows.routers[0]).to.include({ id: 7, sshUser: "admin", autoUpdate: true, time: "03:30", window: 90 });
         expect(rows.routers[0].days).to.deep.equal(["6", "0"].sort((a, b) => ["1", "2", "3", "4", "5", "6", "0"].indexOf(a) - ["1", "2", "3", "4", "5", "6", "0"].indexOf(b)));
@@ -39,7 +39,7 @@ describe("configsync", () => {
         const local = {
             moxas: [
                 { site: "1", id: 1, name: "Keller neu", host: "10.0.0.5", port: 4001, enabled: true, fwAuto: true }, // changed
-                { site: "1", id: 0, name: "COM", host: "", device: "/dev/ttyr00", port: 4001, enabled: true, fwAuto: false }, // new
+                { site: "1", id: 0, name: "Neu", host: "10.0.0.9", port: 4001, enabled: true, fwAuto: false }, // new
                 // id 2 removed
             ],
             units: [{ site: "1", name: "WHG 1", label: "", general: false }, { site: "1", name: "WHG 3", label: "", general: false }],
@@ -48,7 +48,8 @@ describe("configsync", () => {
         const p = sync.plan(1, local, snap, cfg);
         const g = p.push.gateways;
         expect(g.find((x) => x.id === 1)).to.include({ name: "Keller neu" });
-        expect(g.find((x) => !x.id)).to.include({ device: "/dev/ttyr00", fw_auto: false });
+        expect(g.find((x) => !x.id)).to.include({ name: "Neu", host: "10.0.0.9", fw_auto: false });
+        expect(g.every((x) => !("device" in x))).to.equal(true);
         expect(g.find((x) => x.delete)).to.include({ id: 2 });
         expect(p.push.units.map((u) => [u.name, !!u.delete])).to.deep.equal([["WHG 3", false], ["WHG 2", true]]);
     });
@@ -195,12 +196,12 @@ describe("MbusManager table comparison", () => {
 
     it("pushes rows added in the instance, takes the new ids over and writes the tables once", async () => {
         await mgr.refreshConfig(mgr.clients[0]);
-        tables.moxas.push({ site: "1", id: 0, name: "COM Moxa", host: "", device: "/dev/ttyr00", port: 4001, enabled: true, fwAuto: false });
+        tables.moxas.push({ site: "1", id: 0, name: "COM Moxa", host: "10.0.0.7", port: 4001, enabled: true, fwAuto: false });
         tables.units.push({ site: "1", name: "WHG 2", label: "Dach", general: false });
         await mgr.refreshConfig(mgr.clients[0]);
         expect(state.ingests).to.have.length(1);
         const push = state.ingests[0].config_push;
-        expect(push.gateways[0]).to.include({ name: "COM Moxa", device: "/dev/ttyr00" });
+        expect(push.gateways[0]).to.include({ name: "COM Moxa", host: "10.0.0.7" });
         expect(tables.moxas.find((m) => m.name === "COM Moxa").id).to.be.greaterThan(0);
         expect(tables.units.map((u) => u.name)).to.include("WHG 2");
         const n = written.length;
@@ -264,5 +265,149 @@ describe("Bus on a COM device", () => {
         let msg = "";
         await b.connect().catch((e) => (msg = e.message));
         expect(msg).to.include("fehlt");
+    });
+});
+
+describe("password and COM port per Moxa", () => {
+    it("shows the COM port of a Moxa and keeps its password when the rows are rebuilt", () => {
+        const cfg = { gateways: [gw(1, "Keller", "10.0.0.5")], units: [], routers: [] };
+        const rows = sync.rowsFromServer(1, cfg, (id) => `/x/com/a1-moxa-${id}`);
+        expect(rows.moxas[0].comPort).to.equal("/x/com/a1-moxa-1");
+        expect(sync.canonMoxa({ ...rows.moxas[0], password: "geheim" })).to.not.have.any.keys("password", "comPort", "device");
+    });
+
+    it("keeps the password of a row after a comparison, and does not send it", async () => {
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), "mbus-pw-"));
+        const state = {
+            ingests: [],
+            cfg: {
+                ok: true, client: { id: 5, name: "T" }, settings: { version: 1, scan_days: 30, read_minutes: 15, timesync_days: 30, timesync_enabled: false },
+                gateways: [gw(1, "Keller", "10.0.0.5")], units: [], commands: [], alarms: [], routers: [], router_commands: [],
+            },
+        };
+        let tables = { moxas: [{ site: "1", id: 1, name: "Keller", host: "10.0.0.5", port: 4001, enabled: true, fwAuto: true, password: "enc:abc" }], units: [], routers: [] };
+        const mgr = new MbusManager({
+            log: { info() {}, warn() {}, error() {}, debug() {} },
+            clients: [{ label: "a1", api: { mbusConfig: async () => ({ ok: true, data: JSON.parse(JSON.stringify(state.cfg)) }), mbusIngest: async (p) => { state.ingests.push(p); return { ok: true, data: {} }; } } }],
+            store: new Store(dir),
+            version: "t",
+            setState: async () => {},
+            tables: { read: () => JSON.parse(JSON.stringify(tables)), write: async (t) => { tables = t; } },
+        });
+        mgr.store.init();
+        state.cfg.gateways[0].host = "10.0.0.6"; // changed on the server
+        await mgr.refreshConfig(mgr.clients[0]);
+        mgr.stop();
+        fs.rmSync(dir, { recursive: true, force: true });
+        expect(tables.moxas[0]).to.include({ host: "10.0.0.6", password: "enc:abc" });
+        expect(state.ingests).to.have.length(0);
+    });
+});
+
+describe("ComMounts", () => {
+    const { ComMounts } = require("../../lib/mbus/commount");
+    const fake = path.join(__dirname, "..", "helpers", "fakemount.js");
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    let dir;
+    let mounts;
+    let events;
+    beforeEach(() => {
+        dir = fs.mkdtempSync(path.join(os.tmpdir(), "mbus-com-"));
+        events = [];
+        mounts = new ComMounts({
+            log: { info() {}, warn() {}, error() {}, debug() {} },
+            dir,
+            restartMs: 150,
+            upAfterMs: 200,
+            command: (file, host, port) => ({ cmd: process.execPath, args: [fake, file, host, String(port)] }),
+            onChange: (label, id, file) => events.push([label, id, file]),
+        });
+    });
+    afterEach(() => {
+        mounts.stopAll();
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("mounts a port for an active Moxa and unmounts it when disabled or removed", async () => {
+        mounts.sync("a1", [{ id: 4, host: "10.0.0.5", port: 4001, enabled: true }, { id: 5, host: "10.0.0.6", port: 4001, enabled: false }]);
+        await wait(600);
+        const file = mounts.file("a1", 4);
+        expect(mounts.isUp("a1", 4)).to.equal(true);
+        expect(fs.existsSync(file)).to.equal(true);
+        expect(mounts.isUp("a1", 5)).to.equal(false);
+        expect(events[0]).to.deep.equal(["a1", 4, file]);
+        mounts.sync("a1", [{ id: 4, host: "10.0.0.5", port: 4001, enabled: false }]);
+        await wait(300);
+        expect(mounts.isUp("a1", 4)).to.equal(false);
+        expect(fs.existsSync(file)).to.equal(false);
+        expect(events[events.length - 1]).to.deep.equal(["a1", 4, ""]);
+    });
+
+    it("remounts when the address changes and does not mount a gateway with a device or no host", async () => {
+        mounts.sync("a1", [{ id: 1, host: "10.0.0.5", port: 4001 }, { id: 2, host: "", port: 4001 }, { id: 3, host: "10.0.0.8", port: 4001, device: "/dev/ttyUSB0" }]);
+        await wait(500);
+        expect(mounts.isUp("a1", 1)).to.equal(true);
+        expect(mounts.ports.size).to.equal(1);
+        mounts.sync("a1", [{ id: 1, host: "10.0.0.9", port: 4001 }]);
+        await wait(500);
+        expect(mounts.isUp("a1", 1)).to.equal(true);
+        expect(mounts.ports.get("a1:1").host).to.equal("10.0.0.9");
+    });
+
+    it("keeps trying while the Moxa is unreachable and logs it once", async () => {
+        const warns = [];
+        mounts.log.warn = (m) => warns.push(m);
+        mounts.sync("a1", [{ id: 9, host: "fail", port: 4001 }]);
+        await wait(700);
+        expect(mounts.isUp("a1", 9)).to.equal(false);
+        expect(warns).to.have.length(1);
+        expect(warns[0]).to.include("Connection refused");
+        expect(mounts.ports.get("a1:9").wanted).to.equal(true);
+    });
+
+    it("removes everything when the adapter stops", async () => {
+        mounts.sync("a1", [{ id: 1, host: "10.0.0.5", port: 4001 }]);
+        await wait(500);
+        mounts.stopAll();
+        expect(fs.readdirSync(path.join(dir, "com"))).to.deep.equal([]);
+    });
+});
+
+describe("meters in the instance table", () => {
+    const meter = (id, extra = {}) => ({ gateway_id: 1, id, medium: 7, primary: 201, manufacturer: "IST", medium_name: "Cold water", kind: null, unit: null, label: null, status: "neu", ...extra });
+
+    it("lists the meters of the server and sends assignments back", () => {
+        const cfg = { gateways: [], units: [], routers: [], meter_rows: [meter("111"), meter("222", { kind: "warmwasser", unit: "WHG 1", status: "aktiv" })] };
+        const rows = sync.rowsFromServer(1, cfg);
+        expect(rows.meters.map((m) => [m.mid, m.type, m.kind, m.unit, m.status])).to.deep.equal([
+            ["111", "Cold water", "", "", "neu"],
+            ["222", "Cold water", "warmwasser", "WHG 1", "aktiv"],
+        ]);
+        const snap = sync.snapshotFromServer(cfg);
+        const local = { moxas: [], units: [], routers: [], meters: rows.meters.map((m) => (m.mid === "111" ? { ...m, kind: "kaltwasser", unit: "WHG 1", label: "Bad" } : m)) };
+        const p = sync.plan(1, local, snap, cfg);
+        expect(p.push.meters).to.have.length(1);
+        expect(p.push.meters[0]).to.include({ gateway_id: 1, meter_id: "111", medium: 7, kind: "kaltwasser", unit: "WHG 1", label: "Bad" });
+    });
+
+    it("takes the server assignment when the instance did not change the row and keeps a refused edit", () => {
+        const before = { gateways: [], units: [], routers: [], meter_rows: [meter("111")] };
+        const snap = sync.snapshotFromServer(before);
+        const local = { moxas: [], units: [], routers: [], meters: sync.rowsFromServer(1, before).meters };
+        const after = { ...before, meter_rows: [meter("111", { kind: "kaltwasser", unit: "WHG 3", status: "aktiv" })] };
+        expect(sync.plan(1, local, snap, after).push).to.equal(null);
+        expect(sync.resolve(1, after, [], []).meters[0]).to.include({ unit: "WHG 3", status: "aktiv" });
+        const edited = { ...local, meters: [{ ...local.meters[0], unit: "WHG 99" }] };
+        const p = sync.plan(1, edited, snap, before);
+        const rows = sync.resolve(1, before, p.pending, [{ kind: "meter", ref: p.push.meters[0].ref, ok: false, error: "x" }]);
+        expect(rows.meters[0].unit).to.equal("WHG 99");
+    });
+
+    it("ignores the display columns when comparing", () => {
+        const a = { moxas: [], units: [], routers: [], meters: [{ site: "1", gw: 1, mid: "1", medium: 7, kind: "", unit: "", label: "", status: "neu", type: "A", adr: "1" }] };
+        const b = { moxas: [], units: [], routers: [], meters: [{ ...a.meters[0] }] };
+        expect(sync.sameRows(a, b)).to.equal(true);
+        b.meters[0].label = "x";
+        expect(sync.sameRows(a, b)).to.equal(false);
     });
 });

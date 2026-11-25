@@ -177,6 +177,10 @@ web application every minute, using the state both sides agreed on last time (`s
 
 When the tables change, the adapter writes them into its own configuration, which restarts the instance once.
 
+**Automatic COM port.** For every active Moxa with a network address the adapter mounts a virtual COM port (pseudo terminal through `socat`) in the data folder of the instance, e.g. `com/a1-moxa-21`. The path is shown in the table (column "COM-Port") and in the state `mbus.<a1..a4>.gateways.<id>.comPort`. The port is unmounted when the Moxa is unreachable, disabled or deleted and when the adapter stops, and mounted again by itself. The readings use this port while it is mounted, otherwise the TCP connection directly. The web console password is entered per Moxa in its table row (encrypted, never sent to the server).
+
+**Meters.** The table "Zähler und Zuteilung" lists the meters found by the bus scan. Kind, apartment, label and status can be changed here and in the web application and are compared like the other tables.
+
 **COM device instead of TCP.** A Moxa in real-COM mode (driver maps it to e.g. `/dev/ttyr00`) or a USB serial
 adapter (`/dev/ttyUSB0`) can be used by entering the device in the column "COM-Gerät". The adapter opens it with
 `socat` (`sudo apt install socat`), 2400 baud 8E1 unless set otherwise in the web application. The user of the
@@ -212,6 +216,13 @@ npm run check             # type check
 ```
 
 ## Changelog
+
+### 0.3.1
+
+- automatic mount/unmount of a virtual COM port per Moxa, shown in the table
+- Moxa web password per box (replaces the one password for all)
+- table for meters and their assignment, two-way with the web application
+- own tab for Moxa and routers
 
 ### 0.3.0
 

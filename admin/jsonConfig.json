@@ -682,18 +682,6 @@
                     "lg": 6,
                     "xl": 6
                 },
-                "moxaPassword": {
-                    "type": "password",
-                    "label": "moxaPassword",
-                    "help": "moxaPasswordHelp",
-                    "newLine": true,
-                    "hidden": "!data.mbusEnabled",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 6,
-                    "xl": 6
-                },
                 "_mbusTablesHint": {
                     "type": "staticText",
                     "text": "mbusTablesHint",
@@ -703,96 +691,6 @@
                     "md": 12,
                     "lg": 12,
                     "xl": 12
-                },
-                "mbusMoxas": {
-                    "type": "table",
-                    "label": "mbusMoxasTable",
-                    "help": "mbusMoxasHelp",
-                    "newLine": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 12,
-                    "lg": 12,
-                    "xl": 12,
-                    "items": [
-                        {
-                            "type": "select",
-                            "attr": "site",
-                            "title": "colSite",
-                            "options": [
-                                {
-                                    "label": "a1",
-                                    "value": "1"
-                                },
-                                {
-                                    "label": "a2",
-                                    "value": "2"
-                                },
-                                {
-                                    "label": "a3",
-                                    "value": "3"
-                                },
-                                {
-                                    "label": "a4",
-                                    "value": "4"
-                                }
-                            ],
-                            "default": "1",
-                            "width": "7%"
-                        },
-                        {
-                            "type": "number",
-                            "attr": "id",
-                            "title": "colId",
-                            "readOnly": true,
-                            "default": 0,
-                            "width": "6%"
-                        },
-                        {
-                            "type": "text",
-                            "attr": "name",
-                            "title": "colName",
-                            "default": "",
-                            "width": "20%"
-                        },
-                        {
-                            "type": "text",
-                            "attr": "host",
-                            "title": "colHost",
-                            "default": "",
-                            "width": "17%"
-                        },
-                        {
-                            "type": "number",
-                            "attr": "port",
-                            "title": "colPort",
-                            "default": 4001,
-                            "min": 1,
-                            "max": 65535,
-                            "width": "8%"
-                        },
-                        {
-                            "type": "text",
-                            "attr": "device",
-                            "title": "colDevice",
-                            "default": "",
-                            "width": "20%"
-                        },
-                        {
-                            "type": "checkbox",
-                            "attr": "enabled",
-                            "title": "colEnabled",
-                            "default": true,
-                            "width": "8%"
-                        },
-                        {
-                            "type": "checkbox",
-                            "attr": "fwAuto",
-                            "title": "colFwAuto",
-                            "default": true,
-                            "width": "10%"
-                        }
-                    ]
                 },
                 "mbusUnits": {
                     "type": "table",
@@ -850,6 +748,263 @@
                             "title": "colGeneral",
                             "default": false,
                             "width": "15%"
+                        }
+                    ]
+                },
+                "mbusMeters": {
+                    "type": "table",
+                    "label": "mbusMetersTable",
+                    "help": "mbusMetersHelp",
+                    "newLine": true,
+                    "noDelete": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
+                    "items": [
+                        {
+                            "type": "select",
+                            "attr": "site",
+                            "title": "colSite",
+                            "options": [
+                                {
+                                    "label": "a1",
+                                    "value": "1"
+                                },
+                                {
+                                    "label": "a2",
+                                    "value": "2"
+                                },
+                                {
+                                    "label": "a3",
+                                    "value": "3"
+                                },
+                                {
+                                    "label": "a4",
+                                    "value": "4"
+                                }
+                            ],
+                            "default": "1",
+                            "width": "5%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "gw",
+                            "title": "colGateway",
+                            "readOnly": true,
+                            "default": 0,
+                            "width": "5%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "mid",
+                            "title": "colMeterId",
+                            "readOnly": true,
+                            "default": "",
+                            "width": "11%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "adr",
+                            "title": "colAddr",
+                            "readOnly": true,
+                            "default": "",
+                            "width": "5%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "type",
+                            "title": "colType",
+                            "readOnly": true,
+                            "default": "",
+                            "width": "11%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "medium",
+                            "title": "colMedium",
+                            "readOnly": true,
+                            "default": 0,
+                            "width": "6%"
+                        },
+                        {
+                            "type": "select",
+                            "attr": "kind",
+                            "title": "colKind",
+                            "default": "",
+                            "width": "15%",
+                            "options": [
+                                {
+                                    "label": "kindNone",
+                                    "value": ""
+                                },
+                                {
+                                    "label": "kindKalt",
+                                    "value": "kaltwasser"
+                                },
+                                {
+                                    "label": "kindWarm",
+                                    "value": "warmwasser"
+                                },
+                                {
+                                    "label": "kindWaerme",
+                                    "value": "waerme"
+                                },
+                                {
+                                    "label": "kindSonst",
+                                    "value": "sonstige"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "attr": "unit",
+                            "title": "colUnit",
+                            "default": "",
+                            "width": "12%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "label",
+                            "title": "colLabel",
+                            "default": "",
+                            "width": "18%"
+                        },
+                        {
+                            "type": "select",
+                            "attr": "status",
+                            "title": "colStatus",
+                            "default": "neu",
+                            "width": "12%",
+                            "options": [
+                                {
+                                    "label": "statusNeu",
+                                    "value": "neu"
+                                },
+                                {
+                                    "label": "statusAktiv",
+                                    "value": "aktiv"
+                                },
+                                {
+                                    "label": "statusIgnoriert",
+                                    "value": "ignoriert"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "_network": {
+            "type": "panel",
+            "label": "networkTab",
+            "items": {
+                "_networkIntro": {
+                    "type": "staticText",
+                    "text": "networkIntro",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                },
+                "mbusMoxas": {
+                    "type": "table",
+                    "label": "mbusMoxasTable",
+                    "help": "mbusMoxasHelp",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
+                    "items": [
+                        {
+                            "type": "select",
+                            "attr": "site",
+                            "title": "colSite",
+                            "options": [
+                                {
+                                    "label": "a1",
+                                    "value": "1"
+                                },
+                                {
+                                    "label": "a2",
+                                    "value": "2"
+                                },
+                                {
+                                    "label": "a3",
+                                    "value": "3"
+                                },
+                                {
+                                    "label": "a4",
+                                    "value": "4"
+                                }
+                            ],
+                            "default": "1",
+                            "width": "6%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "id",
+                            "title": "colId",
+                            "readOnly": true,
+                            "default": 0,
+                            "width": "5%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "name",
+                            "title": "colName",
+                            "default": "",
+                            "width": "17%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "host",
+                            "title": "colHost",
+                            "default": "",
+                            "width": "13%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "port",
+                            "title": "colPort",
+                            "default": 4001,
+                            "min": 1,
+                            "max": 65535,
+                            "width": "7%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "comPort",
+                            "title": "colComPort",
+                            "readOnly": true,
+                            "default": "",
+                            "width": "24%"
+                        },
+                        {
+                            "type": "password",
+                            "attr": "password",
+                            "title": "colMoxaPassword",
+                            "default": "",
+                            "width": "12%"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "enabled",
+                            "title": "colEnabled",
+                            "default": true,
+                            "width": "7%"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "fwAuto",
+                            "title": "colFwAuto",
+                            "default": true,
+                            "width": "9%"
                         }
                     ]
                 },

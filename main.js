@@ -17,6 +17,7 @@ const { MoxaUpdater } = require("./lib/moxa/updater");
 const { RouterUpdater } = require("./lib/mikrotik/updater");
 const { ensureKey } = require("./lib/mikrotik/ssh");
 const { Store } = require("./lib/mbus/store");
+const { ComMounts } = require("./lib/mbus/commount");
 const pkg = require("./package.json");
 
 /** Retry delay after a network or server problem. */
@@ -179,12 +180,39 @@ class AbrechnungMailcarrier extends utils.Adapter {
         }
         this.mbusObjects = new Set();
         const dir = utils.getAbsoluteInstanceDataDir(this);
-        const moxaPassword = String(this.config.moxaPassword || "").trim();
-        if (!moxaPassword) {
-            this.log.info(
-                "No Moxa password configured: the firmware of the Moxa is not looked after.",
+        // the web console password of each Moxa is entered in its table row; plain entries are encrypted here
+        const moxaRows = asRows(this.config.mbusMoxas);
+        let encrypted = false;
+        for (const row of moxaRows) {
+            const p = String(row.password || "");
+            if (p && !p.startsWith("enc:")) {
+                row.password = `enc:${this.encrypt(p)}`;
+                encrypted = true;
+            }
+        }
+        if (encrypted) {
+            this.config.mbusMoxas = moxaRows;
+            await this.extendForeignObjectAsync(
+                `system.adapter.${this.namespace}`,
+                { native: { mbusMoxas: moxaRows } },
             );
         }
+        const moxaPassword = (/** @type {string} */ label, /** @type {number} */ id) => {
+            const row = asRows(this.config.mbusMoxas).find(
+                (x) =>
+                    String(x.site) === String(label).slice(1) &&
+                    Number(x.id) === Number(id),
+            );
+            const p = String((row && row.password) || "");
+            if (!p) {
+                return "";
+            }
+            try {
+                return p.startsWith("enc:") ? this.decrypt(p.slice(4)) : p;
+            } catch {
+                return "";
+            }
+        };
         const sshKey = await ensureKey(dir);
         if (!sshKey.ok) {
             this.log.warn(
@@ -198,13 +226,22 @@ class AbrechnungMailcarrier extends utils.Adapter {
                 ? new RouterUpdater({ log: this.log, dir })
                 : null,
             sshPublicKey: sshKey.ok ? sshKey.publicKey : null,
-            updater: moxaPassword
-                ? new MoxaUpdater({
-                      log: this.log,
-                      password: moxaPassword,
-                      dir,
-                  })
-                : null,
+            updater: new MoxaUpdater({
+                log: this.log,
+                password: String(this.config.moxaPassword || "").trim(),
+                dir,
+            }),
+            moxaPassword,
+            comMounts: new ComMounts({
+                log: this.log,
+                dir,
+                onChange: (label, id, file) =>
+                    this.mbusSetState(
+                        `mbus.${label}.gateways.${id}.comPort`,
+                        file,
+                        "COM-Port (automatisch eingebunden)",
+                    ),
+            }),
             store: new Store(dir),
             version: pkg.version,
             setState: (id, val, name, write) =>
@@ -214,8 +251,10 @@ class AbrechnungMailcarrier extends utils.Adapter {
                     moxas: asRows(this.config.mbusMoxas),
                     units: asRows(this.config.mbusUnits),
                     routers: asRows(this.config.mbusRouters),
+                    meters: asRows(this.config.mbusMeters),
                 }),
                 write: async (t) => {
+                    this.config.mbusMoxas = t.moxas;
                     await this.extendForeignObjectAsync(
                         `system.adapter.${this.namespace}`,
                         {
@@ -223,6 +262,7 @@ class AbrechnungMailcarrier extends utils.Adapter {
                                 mbusMoxas: t.moxas,
                                 mbusUnits: t.units,
                                 mbusRouters: t.routers,
+                                mbusMeters: t.meters || [],
                             },
                         },
                     );

@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.0",
+        "version": "0.3.1",
         "news": {
+            "0.3.1": {
+                "en": "The COM port of each Moxa is mounted, unmounted and reconnected automatically (virtual COM port through socat). The Moxa web password is entered per box. New table for the meters and their assignment (kind, apartment, label, status), kept in sync with the web application. Moxa and routers have their own tab.",
+                "de": "Der COM-Port jeder Moxa wird automatisch eingebunden, ausgehängt und nach Ausfällen neu verbunden (virtueller COM-Port über socat). Das Moxa-Web-Passwort wird pro Box erfasst. Neue Tabelle für die Zähler und ihre Zuteilung (Art, Wohneinheit, Bezeichnung, Status), abgeglichen mit der Webanwendung. Moxa und Router haben einen eigenen Reiter."
+            },
             "0.3.0": {
                 "en": "Moxas (address and port or a COM device), apartments and MikroTik routers can now be entered in the instance configuration as well as in the web application; both sides are compared and kept in sync. A Moxa can be reached through a COM device (real-COM mode, USB serial adapter) instead of TCP.",
                 "de": "Moxa (Adresse und Port oder COM-Gerät), Wohneinheiten und MikroTik-Router lassen sich jetzt auch in der Instanz-Konfiguration erfassen, nicht nur in der Webanwendung; beide Seiten werden abgeglichen. Ein Moxa kann statt über TCP auch über ein COM-Gerät (Real-COM-Modus, USB-Seriell-Adapter) erreicht werden."
@@ -136,6 +140,7 @@
         "mbusMoxas": [],
         "mbusUnits": [],
         "mbusRouters": [],
+        "mbusMeters": [],
         "mbusToken1": "",
         "mbusToken2": "",
         "mbusToken3": "",

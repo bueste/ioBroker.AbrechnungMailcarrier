@@ -57,6 +57,7 @@ describe("MbusManager: Moxa firmware care", () => {
         };
         state = { cfg: config(), ingests: [] };
         mgr = new MbusManager({
+            moxaPassword: () => "box-pw",
             log: { info() {}, warn() {}, error() {}, debug() {} },
             clients: [
                 {
