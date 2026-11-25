@@ -253,6 +253,16 @@ class AbrechnungMailcarrier extends utils.Adapter {
             }),
             moxaPassword,
             reportConnection: !String(this.config.apiToken || "").trim(),
+            moxaSecondary: (label, id) => {
+                const row = asRows(this.config.mbusMoxas).find(
+                    (x) =>
+                        String(x.site) === String(label).slice(1) &&
+                        Number(x.id) === Number(id),
+                );
+                return String((row && row.secondary) || "")
+                    .split(/[s,;]+/)
+                    .filter((x) => /^d{8}$/.test(x));
+            },
             moxaSetup: (label, id) => {
                 const row = asRows(this.config.mbusMoxas).find(
                     (x) =>

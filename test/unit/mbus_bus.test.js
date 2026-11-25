@@ -145,3 +145,55 @@ describe("Bus pause after an answer", () => {
         expect(found.map((h) => h.addr)).to.deep.equal([1, 2, 3]);
     });
 });
+
+describe("Bus secondary address", () => {
+    const net = require("node:net");
+    const { takeFrame } = require("../../lib/mbus/frame");
+    const HOT = Buffer.from("684C4C680865724788845474264A062A0000000C7847888454046D390C583B0413786D0300026C7E364413864E0300426C5E368401131AF0020082016C3E360223800FC2026CFA1B01FD170209FD0E14DE16", "hex");
+
+    /** A meter that answers only after it was selected by its identification number 54848847. */
+    function selectable() {
+        const log = [];
+        const server = net.createServer((sock) => {
+            let selected = false;
+            let buf = Buffer.alloc(0);
+            sock.on("data", (d) => {
+                buf = Buffer.concat([buf, d]);
+                for (;;) {
+                    const r = takeFrame(buf);
+                    if (r.kind === "none") {
+                        break;
+                    }
+                    buf = r.rest;
+                    if (r.kind === "long" && r.a === 0xfd && r.ci === 0x52) {
+                        log.push(r.data.toString("hex"));
+                        selected = r.data.subarray(0, 4).toString("hex") === "47888454";
+                        if (selected) {
+                            sock.write(Buffer.from([0xe5]));
+                        }
+                    } else if (r.kind === "short" && r.a === 0xfd && (r.c === 0x5b || r.c === 0x7b) && selected) {
+                        sock.write(HOT);
+                    }
+                }
+            });
+        });
+        return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve({ server, log })));
+    }
+
+    it("selects a meter by its identification number and reads it at address 253", async () => {
+        const { server, log } = await selectable();
+        const b = new Bus({ host: "127.0.0.1", port: server.address().port, ackWaitMs: 100, dataWaitMs: 300, guardMs: 5 });
+        await b.connect();
+        const r = await b.readMeter(253, "54848847");
+        const none = await b.readMeter(253, "10000829");
+        const bad = await b.readMeter(253, "12ab");
+        b.close();
+        await new Promise((res) => server.close(res));
+        expect(r.ok).to.equal(true);
+        expect(r.header.id).to.equal("54848847");
+        expect(log[0]).to.equal("47888454ffffffff");
+        expect(none.ok).to.equal(false);
+        expect(none.error).to.include("Sekundäradresse");
+        expect(bad.ok).to.equal(false);
+    });
+});

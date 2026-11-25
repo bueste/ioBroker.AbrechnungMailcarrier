@@ -217,6 +217,10 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.6
+
+- secondary addresses per Moxa row: meters selected by identification number (SND_UD CI 0x52, address 253)
+
 ### 0.3.5
 
 - bus scan: 150 ms pause after every answer (the Relay master ignored the next telegram, meters 2, 4, 6 were overlooked)

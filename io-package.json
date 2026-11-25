@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.5",
+        "version": "0.3.6",
         "news": {
+            "0.3.6": {
+                "en": "Meters that the bus scan does not find by a primary address (e.g. Integra aquastream) can be entered by their identification number in the Moxa row (secondary addresses) and are read with every poll.",
+                "de": "Zähler, die der Bus-Scan nicht über eine Primäradresse findet (z. B. Integra aquastream), lassen sich mit ihrer Kennnummer in der Moxa-Zeile eintragen (Sekundäradressen) und werden bei jeder Abfrage gelesen."
+            },
             "0.3.5": {
                 "en": "Bus scan finds every meter: after an answer the master needs a short pause (150 ms), meters directly after an answering meter were overlooked.",
                 "de": "Der Bus-Scan findet jetzt jeden Zähler: Nach einer Antwort braucht die Zentrale eine kurze Pause (150 ms), Zähler direkt nach einem antwortenden Zähler wurden übersehen."
