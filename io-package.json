@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.3",
+        "version": "0.3.4",
         "news": {
+            "0.3.4": {
+                "en": "The instance shows connected (green) when the web application answers and every active Moxa answered at its last reading. The first bus scan runs right after a Moxa was set up.",
+                "de": "Die Instanz zeigt Verbunden (grün), wenn die Webanwendung antwortet und jede aktive Moxa bei der letzten Abfrage geantwortet hat. Der erste Bus-Scan läuft direkt nach der Einrichtung einer Moxa."
+            },
             "0.3.3": {
                 "en": "Moxa setup: a Moxa in the wrong operating mode (e.g. Real COM) or with the wrong serial line is set up through its web console (TCP server mode, raw, 2400 8E1) and restarted. Intervals per site as a table in the instance configuration, kept in sync. The COM port has a short path (/opt/iobroker/com/...), its state is shown in the status and a finding is raised when it is not mounted.",
                 "de": "Moxa-Einrichtung: Eine Moxa im falschen Modus (z. B. Real COM) oder mit falscher serieller Einstellung wird über ihre Web-Konsole eingerichtet (TCP Server Mode, Raw, 2400 8E1) und neu gestartet. Intervalle pro Anlage als Tabelle in der Instanz-Konfiguration, abgeglichen. Der COM-Port hat einen kurzen Pfad (/opt/iobroker/com/...), sein Zustand steht im Status, und ein Befund meldet, wenn er nicht eingebunden ist."

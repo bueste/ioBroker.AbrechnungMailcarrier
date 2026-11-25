@@ -217,6 +217,11 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.4
+
+- info.connection follows the M-Bus side (web application and active Moxas answer)
+- first scan right after the Moxa setup
+
 ### 0.3.3
 
 - Moxa setup through the web console (TCP server mode, raw, serial line of the site), switch in the table
