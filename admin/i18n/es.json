@@ -109,5 +109,6 @@
     "kindSonst": "Other",
     "statusNeu": "new",
     "statusAktiv": "active",
-    "statusIgnoriert": "ignored"
+    "statusIgnoriert": "ignored",
+    "mbusStatusButton": "Show status (Moxa, COM port, firmware, routers)"
 }

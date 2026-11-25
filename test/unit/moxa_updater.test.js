@@ -143,3 +143,21 @@ describe("MoxaUpdater", () => {
         expect(r.note).to.contain("nicht mehr offen");
     });
 });
+
+describe("MoxaWeb page parsing (real console pages)", () => {
+    const fx = (n) => fs.readFileSync(path.join(__dirname, "../fixtures", n), "utf8");
+
+    it("reads model, firmware, MAC and serial number that the overview page fills by script", () => {
+        const web = new MoxaWeb({ host: "x", port: 80, password: "p" });
+        web.pages.set("/main.htm", fx("moxa_main.htm"));
+        const i = web.parseInfo();
+        expect(i).to.deep.include({ model: "NPort 5110", firmware: "2.11", firmwareText: "2.11 Build 23081519", mac: "00:90:E8:00:00:01", serialNo: "0001" });
+    });
+
+    it("reads operating mode and serial settings of port 1", () => {
+        const web = new MoxaWeb({ host: "x", port: 80, password: "p" });
+        web.pages.set("/04View.htm", fx("moxa_04view.htm"));
+        web.pages.set("/03View.htm", fx("moxa_03view.htm"));
+        expect(web.parseSettings()).to.deep.equal({ mode: "Real COM Mode", serial: "2400 8E1" });
+    });
+});

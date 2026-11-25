@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.1",
+        "version": "0.3.2",
         "news": {
+            "0.3.2": {
+                "en": "The Moxa web console is read correctly (model, firmware, MAC, operating mode, serial settings). New button Status in the tab Moxa and routers shows connection, COM port, firmware, operating mode and routers. A busy web console is reported as such.",
+                "de": "Die Web-Konsole der Moxa wird richtig gelesen (Modell, Firmware, MAC, Betriebsart, serielle Einstellung). Neuer Knopf Status im Reiter Moxa und Router zeigt Verbindung, COM-Port, Firmware, Betriebsart und Router. Eine belegte Web-Konsole wird als solche gemeldet."
+            },
             "0.3.1": {
                 "en": "The COM port of each Moxa is mounted, unmounted and reconnected automatically (virtual COM port through socat). The Moxa web password is entered per box. New table for the meters and their assignment (kind, apartment, label, status), kept in sync with the web application. Moxa and routers have their own tab.",
                 "de": "Der COM-Port jeder Moxa wird automatisch eingebunden, ausgehängt und nach Ausfällen neu verbunden (virtueller COM-Port über socat). Das Moxa-Web-Passwort wird pro Box erfasst. Neue Tabelle für die Zähler und ihre Zuteilung (Art, Wohneinheit, Bezeichnung, Status), abgeglichen mit der Webanwendung. Moxa und Router haben einen eigenen Reiter."

@@ -910,6 +910,19 @@
                     "lg": 12,
                     "xl": 12
                 },
+                "_mbusStatus": {
+                    "type": "sendTo",
+                    "label": "mbusStatusButton",
+                    "command": "mbusStatus",
+                    "jsonData": "{}",
+                    "showProcess": true,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4
+                },
                 "mbusMoxas": {
                     "type": "table",
                     "label": "mbusMoxasTable",

@@ -118,5 +118,6 @@
     "kindSonst": "Sonstiges",
     "statusNeu": "neu",
     "statusAktiv": "aktiv",
-    "statusIgnoriert": "ignoriert"
+    "statusIgnoriert": "ignoriert",
+    "mbusStatusButton": "Status anzeigen (Moxa, COM-Port, Firmware, Router)"
 }

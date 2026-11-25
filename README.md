@@ -217,6 +217,11 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.2
+
+- Moxa web console parsed correctly (values are set by script on the overview page), operating mode and serial settings read
+- button Status in the tab Moxa and routers
+
 ### 0.3.1
 
 - automatic mount/unmount of a virtual COM port per Moxa, shown in the table

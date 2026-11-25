@@ -197,7 +197,10 @@ class AbrechnungMailcarrier extends utils.Adapter {
                 { native: { mbusMoxas: moxaRows } },
             );
         }
-        const moxaPassword = (/** @type {string} */ label, /** @type {number} */ id) => {
+        const moxaPassword = (
+            /** @type {string} */ label,
+            /** @type {number} */ id,
+        ) => {
             const row = asRows(this.config.mbusMoxas).find(
                 (x) =>
                     String(x.site) === String(label).slice(1) &&
@@ -306,6 +309,82 @@ class AbrechnungMailcarrier extends utils.Adapter {
             this.mbusObjects.add(id);
         }
         await this.setState(id, val, true);
+    }
+
+    /**
+     * Readable status of the M-Bus side for the button in the configuration: server contact, every Moxa
+     * (connection, COM port, firmware, operating mode) and every router, from the states of the instance.
+     *
+     * @returns {Promise<string>}
+     */
+    async mbusStatusText() {
+        if (this.config.mbusEnabled !== true) {
+            return "M-Bus ist ausgeschaltet.";
+        }
+        const states = await this.getStatesAsync("mbus.*");
+        const ns = `${this.namespace}.`;
+        /** @type {Record<string, any>} */
+        const v = {};
+        for (const [id, st] of Object.entries(states || {})) {
+            if (st && st.val !== null && st.val !== undefined) {
+                v[id.startsWith(ns) ? id.slice(ns.length) : id] = st.val;
+            }
+        }
+        const lines = [];
+        for (const a of ["a1", "a2", "a3", "a4"]) {
+            const conn = v[`mbus.${a}.info.connection`];
+            if (conn === undefined) {
+                continue;
+            }
+            lines.push(
+                `Anlage ${a}: ${v[`mbus.${a}.info.client`] || "?"}, Server ${conn ? "erreichbar" : "NICHT erreichbar"}, offene Befunde ${v[`mbus.${a}.alarms.count`] ?? "?"}`,
+            );
+            const ids = new Set();
+            for (const k of Object.keys(v)) {
+                const m = new RegExp(
+                    `^mbus\\.${a}\\.gateways\\.(\\d+)\\.`,
+                ).exec(k);
+                if (m) {
+                    ids.add(m[1]);
+                }
+            }
+            for (const id of ids) {
+                const g = (/** @type {string} */ f) =>
+                    v[`mbus.${a}.gateways.${id}.${f}`];
+                lines.push(
+                    `  Moxa ${id} "${g("name") || ""}" ${g("address") || ""}`,
+                );
+                lines.push(
+                    `    Verbindung: ${g("reachable") === undefined ? "noch nicht abgefragt" : g("reachable") ? "erreichbar" : `NICHT erreichbar (${g("lastError") || "?"})`}`,
+                );
+                lines.push(
+                    `    COM-Port: ${g("comPort") || "nicht eingebunden"}`,
+                );
+                lines.push(
+                    `    Letzte Abfrage: ${g("lastPoll") || "-"}, Zähler: ${g("meters") ?? "-"}`,
+                );
+                lines.push(
+                    `    Firmware: ${g("moxaModel") ? `${g("moxaModel")} ${g("moxaFirmware") || "?"} (${g("moxaFirmwareStatus") || "?"})` : "noch nicht gelesen"}${g("moxaNote") ? `, ${g("moxaNote")}` : ""}`,
+                );
+                if (g("moxaMode")) {
+                    const ok = /TCP Server/i.test(String(g("moxaMode")));
+                    lines.push(
+                        `    Betriebsart: ${g("moxaMode")}, seriell ${g("moxaSerial") || "?"}${ok ? "" : "  <- für den M-Bus nötig: TCP Server Mode (Raw), 2400 8E1"}`,
+                    );
+                }
+            }
+        }
+        for (const k of Object.keys(v)) {
+            const m = /^mbus\.(a\d)\.routers\.(\d+)\.status$/.exec(k);
+            if (m) {
+                lines.push(
+                    `Router ${m[2]} (${m[1]}): ${v[k]}, Version ${v[`mbus.${m[1]}.routers.${m[2]}.version`] || "?"}, neueste ${v[`mbus.${m[1]}.routers.${m[2]}.latest`] || "?"}`,
+                );
+            }
+        }
+        return lines.length
+            ? lines.join("\n")
+            : "Noch keine Daten, der erste Abgleich läuft gerade.";
     }
 
     // ------------------------------------------------------------------ local state
@@ -554,6 +633,18 @@ class AbrechnungMailcarrier extends utils.Adapter {
      * @param {ioBroker.Message} obj
      */
     async onMessage(obj) {
+        if (obj && obj.command === "mbusStatus") {
+            const text = await this.mbusStatusText();
+            if (obj.callback) {
+                this.sendTo(
+                    obj.from,
+                    obj.command,
+                    { result: text },
+                    obj.callback,
+                );
+            }
+            return;
+        }
         if (!obj || obj.command !== "testConnection") {
             return;
         }
