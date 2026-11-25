@@ -217,6 +217,10 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.8
+
+- fix: intervals row of an older version was sent back and overwrote the key date setting
+
 ### 0.3.7
 
 - reading only on a key date (default first of the month 00:00) per site; reachability report every ten minutes in between

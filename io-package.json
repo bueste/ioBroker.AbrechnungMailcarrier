@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.7",
+        "version": "0.3.8",
         "news": {
+            "0.3.8": {
+                "en": "Fix: an intervals row saved by an older version is no longer sent back to the web application.",
+                "de": "Korrektur: Eine von einer älteren Version gespeicherte Intervall-Zeile wird nicht mehr an die Webanwendung zurückgeschickt."
+            },
             "0.3.7": {
                 "en": "Reading only on a key date (default: first of the month, 00:00), set per site in the web application and in the intervals table. All meters are read once at the key date; in between the adapter reports every ten minutes whether the Moxa answers.",
                 "de": "Ablesung nur zum Stichtag (Standard: erster Tag im Monat, 00:00), pro Anlage in der Webanwendung und in der Intervall-Tabelle einstellbar. Zum Stichtag werden alle Zähler einmal gelesen; dazwischen meldet der Adapter alle zehn Minuten, ob die Moxa antwortet."

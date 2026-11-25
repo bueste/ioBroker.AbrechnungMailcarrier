@@ -533,3 +533,15 @@ describe("key date reading", () => {
         expect(p.settings).to.include({ read_mode: "stichtag", stichtag_time: "22:00" });
     });
 });
+
+describe("intervals row from an older version", () => {
+    it("does not send an old row back that only lacks the newer fields", () => {
+        const cfg = { gateways: [], units: [], routers: [], settings: { version: 4, scan_days: 30, read_minutes: 15, timesync_days: 30, timesync_enabled: false, read_mode: "stichtag", stichtag_day: "1", stichtag_time: "00:00" } };
+        const oldSnap = { moxas: {}, units: {}, routers: {}, meters: {}, settings: { scan_days: 30, read_minutes: 15, timesync_days: 30, timesync_enabled: false } };
+        const oldRow = { site: "1", scanDays: 30, readMinutes: 15, timesyncDays: 30, timesyncEnabled: false };
+        const p = sync.plan(1, { moxas: [], units: [], routers: [], settings: [oldRow] }, oldSnap, cfg);
+        expect(p.settings).to.equal(null);
+        const rows = sync.resolve(1, cfg, [], []);
+        expect(rows.settings[0]).to.include({ readMode: "stichtag", stichtagDay: "1", stichtagTime: "00:00" });
+    });
+});
