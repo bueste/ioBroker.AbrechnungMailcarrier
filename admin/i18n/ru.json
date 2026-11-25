@@ -113,10 +113,15 @@
     "mbusStatusButton": "Show status (Moxa, COM port, firmware, routers)",
     "colMoxaSetup": "Set up Moxa",
     "mbusSettingsTable": "Intervals per site",
-    "mbusSettingsHelp": "Per site: bus scan (assignment check, default 30 days), meter reading (minutes, default 15) and time sync (days, default off). Valid in the web application and here, both sides are compared. A scan runs once right after the Moxa was added (first scan, repeated hourly until it succeeds) and then only after the days have passed or on request in the web application.",
+    "mbusSettingsHelp": "Per site: bus scan (assignment check, default 30 days), meter reading (minutes, default 15) and time sync (days, default off). Valid in the web application and here, both sides are compared. A scan runs once right after the Moxa was added (first scan, repeated hourly until it succeeds) and then only after the days have passed or on request in the web application. Reading: only on the key date (e.g. 1 = first day of the month, 00:00; last = last day) or continuously at an interval in minutes. On the key date the adapter reads all meters once; in between it reports every few minutes whether the Moxa answers.",
     "colScanDays": "Bus scan every (days)",
     "colReadMinutes": "Readings every (minutes)",
     "colTimesyncDays": "Time sync every (days)",
     "colTimesyncEnabled": "Time sync automatic",
-    "colSecondary": "Secondary addresses"
+    "colSecondary": "Secondary addresses",
+    "colReadMode": "Reading",
+    "readModeStichtag": "only on the key date",
+    "readModeIntervall": "continuous (interval)",
+    "colStichtagDay": "Key date (last or 1-28)",
+    "colStichtagTime": "Time"
 }

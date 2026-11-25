@@ -716,7 +716,7 @@
                                 }
                             ],
                             "default": "1",
-                            "width": "10%"
+                            "width": "6%"
                         },
                         {
                             "type": "number",
@@ -725,7 +725,38 @@
                             "default": 30,
                             "min": 1,
                             "max": 365,
-                            "width": "20%"
+                            "width": "14%"
+                        },
+                        {
+                            "type": "select",
+                            "attr": "readMode",
+                            "title": "colReadMode",
+                            "default": "stichtag",
+                            "options": [
+                                {
+                                    "label": "readModeStichtag",
+                                    "value": "stichtag"
+                                },
+                                {
+                                    "label": "readModeIntervall",
+                                    "value": "intervall"
+                                }
+                            ],
+                            "width": "14%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "stichtagDay",
+                            "title": "colStichtagDay",
+                            "default": "1",
+                            "width": "8%"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "stichtagTime",
+                            "title": "colStichtagTime",
+                            "default": "00:00",
+                            "width": "8%"
                         },
                         {
                             "type": "number",
@@ -734,7 +765,7 @@
                             "default": 15,
                             "min": 5,
                             "max": 1440,
-                            "width": "25%"
+                            "width": "16%"
                         },
                         {
                             "type": "number",
@@ -743,14 +774,14 @@
                             "default": 30,
                             "min": 1,
                             "max": 365,
-                            "width": "25%"
+                            "width": "16%"
                         },
                         {
                             "type": "checkbox",
                             "attr": "timesyncEnabled",
                             "title": "colTimesyncEnabled",
                             "default": false,
-                            "width": "20%"
+                            "width": "12%"
                         }
                     ]
                 },

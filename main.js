@@ -657,7 +657,7 @@ class AbrechnungMailcarrier extends utils.Adapter {
             return;
         }
         const m =
-            /\.mbus\.([^.]+)\.settings\.(readMinutes|scanDays|timesyncDays|timesyncEnabled)$/.exec(
+            /\.mbus\.([^.]+)\.settings\.(readMinutes|scanDays|timesyncDays|timesyncEnabled|readMode|stichtagDay|stichtagTime)$/.exec(
                 id,
             );
         if (!m) {
@@ -668,9 +668,16 @@ class AbrechnungMailcarrier extends utils.Adapter {
             scanDays: "scan_days",
             timesyncDays: "timesync_days",
             timesyncEnabled: "timesync_enabled",
+            readMode: "read_mode",
+            stichtagDay: "stichtag_day",
+            stichtagTime: "stichtag_time",
         };
         const val =
-            m[2] === "timesyncEnabled" ? state.val === true : Number(state.val);
+            m[2] === "timesyncEnabled"
+                ? state.val === true
+                : ["readMode", "stichtagDay", "stichtagTime"].includes(m[2])
+                  ? String(state.val)
+                  : Number(state.val);
         if (this.mbus) {
             this.mbus.changeSettings(m[1], { [keys[m[2]]]: val });
         }

@@ -122,10 +122,15 @@
     "mbusStatusButton": "Status anzeigen (Moxa, COM-Port, Firmware, Router)",
     "colMoxaSetup": "Moxa einrichten",
     "mbusSettingsTable": "Intervalle pro Anlage",
-    "mbusSettingsHelp": "Pro Anlage: Bus-Scan (Zuordnungsprüfung, Standard 30 Tage), Zählerstände auslesen (Minuten, Standard 15) und Zeitabgleich (Tage, Standard aus). Gilt für die Anlage in der Webanwendung und hier, beide Seiten werden abgeglichen. Ein Scan läuft nach dem Anlegen der Moxa einmal sofort (erster Scan, wird stündlich wiederholt bis er gelingt) und danach nur nach Ablauf der Tage oder auf Knopfdruck in der Webanwendung.",
+    "mbusSettingsHelp": "Pro Anlage: Bus-Scan (Zuordnungsprüfung, Standard 30 Tage), Zählerstände auslesen (Minuten, Standard 15) und Zeitabgleich (Tage, Standard aus). Gilt für die Anlage in der Webanwendung und hier, beide Seiten werden abgeglichen. Ein Scan läuft nach dem Anlegen der Moxa einmal sofort (erster Scan, wird stündlich wiederholt bis er gelingt) und danach nur nach Ablauf der Tage oder auf Knopfdruck in der Webanwendung. Ablesung: nur am Stichtag (z. B. 1 = erster Tag im Monat, 00:00; last = letzter Tag) oder laufend im Takt von Minuten. Am Stichtag liest der Adapter alle Zähler einmal; dazwischen meldet er alle paar Minuten, ob die Moxa antwortet.",
     "colScanDays": "Bus-Scan alle (Tage)",
     "colReadMinutes": "Zählerstände alle (Minuten)",
     "colTimesyncDays": "Zeitabgleich alle (Tage)",
     "colTimesyncEnabled": "Zeitabgleich automatisch",
-    "colSecondary": "Sekundäradressen"
+    "colSecondary": "Sekundäradressen",
+    "colReadMode": "Ablesung",
+    "readModeStichtag": "nur am Stichtag",
+    "readModeIntervall": "laufend (Takt)",
+    "colStichtagDay": "Stichtag (last oder 1-28)",
+    "colStichtagTime": "Uhrzeit"
 }

@@ -217,6 +217,10 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.7
+
+- reading only on a key date (default first of the month 00:00) per site; reachability report every ten minutes in between
+
 ### 0.3.6
 
 - secondary addresses per Moxa row: meters selected by identification number (SND_UD CI 0x52, address 253)

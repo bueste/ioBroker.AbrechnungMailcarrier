@@ -504,3 +504,32 @@ describe("Moxa setup through the web console", () => {
         expect(setup.checkTarget({ port: 4001, baud: 2400, parity: "X" })).to.be.a("string");
     });
 });
+
+describe("key date reading", () => {
+    const { lastDue } = require("../../lib/mbus/stichtag");
+
+    it("finds the last day of the month at 23:59 that is not in the future", () => {
+        const d = lastDue(new Date(2026, 10, 25, 10, 0, 0), "last", "23:59");
+        expect([d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()]).to.deep.equal([2026, 9, 31, 23, 59]);
+        const e = lastDue(new Date(2026, 10, 30, 23, 59, 30), "last", "23:59");
+        expect([e.getMonth(), e.getDate()]).to.deep.equal([10, 30]);
+        const f = lastDue(new Date(2026, 2, 1, 0, 0, 5), "last", "23:59");
+        expect([f.getMonth(), f.getDate()]).to.deep.equal([1, 28]);
+    });
+
+    it("supports a fixed day of the month", () => {
+        const d = lastDue(new Date(2026, 10, 25, 10, 0, 0), 28, "06:00");
+        expect([d.getMonth(), d.getDate(), d.getHours()]).to.deep.equal([9, 28, 6]);
+        const e = lastDue(new Date(2026, 10, 28, 6, 0, 0), "28", "06:00");
+        expect([e.getMonth(), e.getDate()]).to.deep.equal([10, 28]);
+    });
+
+    it("compares the intervals row with the new fields", () => {
+        const cfg = { gateways: [], units: [], routers: [], settings: { version: 3, scan_days: 30, read_minutes: 15, timesync_days: 30, timesync_enabled: false, read_mode: "stichtag", stichtag_day: "last", stichtag_time: "23:59" } };
+        const row = sync.rowsFromServer(1, cfg).settings[0];
+        expect(row).to.include({ readMode: "stichtag", stichtagDay: "last", stichtagTime: "23:59" });
+        const snap = sync.snapshotFromServer(cfg);
+        const p = sync.plan(1, { moxas: [], units: [], routers: [], settings: [{ ...row, stichtagTime: "22:00" }] }, snap, cfg);
+        expect(p.settings).to.include({ read_mode: "stichtag", stichtag_time: "22:00" });
+    });
+});
