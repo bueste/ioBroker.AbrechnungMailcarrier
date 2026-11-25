@@ -57,7 +57,7 @@
     "unitName": "Nom de l'unité",
     "mbusTablesHint": "Moxas, apartments and routers can be entered here and in the web application. Both sides are compared as soon as M-Bus is switched on and a token is entered: new and changed rows go to the web application, changes made there appear here. After a comparison the instance restarts once. Column Site: a1 to a4 is token 1 to 4.",
     "mbusMoxasTable": "Moxa and COM ports",
-    "mbusMoxasHelp": "One row per Moxa: address and port (Moxa in TCP server mode, raw, 4001) and the web password of this box (up to 15 characters, stays encrypted on this computer and is never sent to the web application). For every active Moxa the adapter mounts a virtual COM port automatically (column COM port, a file in the data folder of the instance), unmounts it when the Moxa is unreachable, disabled or deleted, and reconnects by itself after an outage. Without a web password the firmware of this Moxa is not looked after.",
+    "mbusMoxasHelp": "One row per Moxa: address and port (Moxa in TCP server mode, raw, 4001) and the web password of this box (up to 15 characters, stays encrypted on this computer and is never sent to the web application). For every active Moxa the adapter mounts a virtual COM port automatically (column COM port, a file in the data folder of the instance), unmounts it when the Moxa is unreachable, disabled or deleted, and reconnects by itself after an outage. Without a web password the firmware of this Moxa is not looked after. If the Moxa is in the wrong mode (e.g. Real COM instead of TCP server) or set to the wrong serial line, the adapter sets it up through the web console (TCP server mode, raw, the port of the row, baud rate and parity of the site, 8 data bits, 1 stop bit) and restarts it when Set up is ticked.",
     "mbusUnitsTable": "Apartments and general meters",
     "mbusUnitsHelp": "Name of the unit, e.g. WHG 1 or Allgemein 1. Single meters are assigned in the web application. A unit with assigned meters cannot be deleted here. Renaming means creating a new one.",
     "mbusRoutersTable": "MikroTik routers",
@@ -110,5 +110,12 @@
     "statusNeu": "new",
     "statusAktiv": "active",
     "statusIgnoriert": "ignored",
-    "mbusStatusButton": "Show status (Moxa, COM port, firmware, routers)"
+    "mbusStatusButton": "Show status (Moxa, COM port, firmware, routers)",
+    "colMoxaSetup": "Set up Moxa",
+    "mbusSettingsTable": "Intervals per site",
+    "mbusSettingsHelp": "Per site: bus scan (assignment check, default 30 days), meter reading (minutes, default 15) and time sync (days, default off). Valid in the web application and here, both sides are compared. A scan runs once right after the Moxa was added (first scan, repeated hourly until it succeeds) and then only after the days have passed or on request in the web application.",
+    "colScanDays": "Bus scan every (days)",
+    "colReadMinutes": "Readings every (minutes)",
+    "colTimesyncDays": "Time sync every (days)",
+    "colTimesyncEnabled": "Time sync automatic"
 }

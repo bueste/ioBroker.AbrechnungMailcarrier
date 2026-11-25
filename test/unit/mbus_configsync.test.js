@@ -411,3 +411,96 @@ describe("meters in the instance table", () => {
         expect(sync.sameRows(a, b)).to.equal(false);
     });
 });
+
+describe("COM port warning", () => {
+    it("raises a finding when an active Moxa has no mounted port for three minutes and closes it when mounted", () => {
+        let clock = 1000000;
+        const queued = [];
+        const mgr = new MbusManager({
+            log: { info() {}, warn() {}, error() {}, debug() {} },
+            clients: [{ label: "a1", api: {} }],
+            store: { init() {}, state: { commands: {}, lastRun: {} }, enqueue: (b) => queued.push(b), saveState() {} },
+            version: "t",
+            setState: async () => {},
+            now: () => clock,
+        });
+        const entry = { up: false, since: clock, lastErr: "Connection refused" };
+        mgr.mounts = { ports: new Map([["a1:7", entry]]) };
+        const c = mgr.clients[0];
+        c.cfg = { gateways: [{ id: 7, name: "Keller", port: 4001 }] };
+        mgr.checkMounts(c);
+        expect(queued).to.have.length(0);
+        clock += 4 * 60000;
+        mgr.checkMounts(c);
+        mgr.checkMounts(c);
+        expect(queued).to.have.length(1);
+        expect(queued[0].alarms[0]).to.include({ type: "com_port", key: "7", severity: "warn", resolved: false });
+        expect(queued[0].alarms[0].message).to.include("Connection refused");
+        entry.up = true;
+        mgr.checkMounts(c);
+        expect(queued).to.have.length(2);
+        expect(queued[1].alarms[0]).to.include({ type: "com_port", resolved: true });
+    });
+});
+
+describe("Moxa setup through the web console", () => {
+    const http = require("node:http");
+    const setup = require("../../lib/moxa/setup");
+    const { MoxaWeb } = require("../../lib/moxa/web");
+    const fx = (n) => fs.readFileSync(path.join(__dirname, "../fixtures", n), "utf8");
+
+    function fakeConsole(opts = {}) {
+        const seen = [];
+        const server = http.createServer((req, res) => {
+            const u = new URL(req.url, "http://x");
+            seen.push(u.pathname + (u.search ? "?" + [...u.searchParams.keys()].length : ""));
+            const send = (b) => res.end(b);
+            if (u.pathname === "/serial.htm") return send(opts.noSerialField ? fx("moxa_serial.htm").replace("name=Parity", "name=Other") : fx("moxa_serial.htm"));
+            if (u.pathname === "/04Svr.htm") return send(fx("moxa_04svr.htm"));
+            if (u.pathname === "/09.htm") return send(fx("moxa_09.htm"));
+            if (u.pathname === "/Set.htm") {
+                seen.push(JSON.stringify(Object.fromEntries(u.searchParams)));
+                return send("<title>Set</title>ok");
+            }
+            if (u.pathname === "/09Set.htm") {
+                seen.push("RESTART");
+                return send("restarting");
+            }
+            res.statusCode = 404;
+            res.end();
+        });
+        return new Promise((r) => server.listen(0, "127.0.0.1", () => r({ server, port: server.address().port, seen })));
+    }
+
+    it("sets the serial line, switches to TCP server mode and restarts, in that order", async () => {
+        const f = await fakeConsole();
+        const web = new MoxaWeb({ host: "127.0.0.1", port: f.port, password: "x" });
+        const r = await setup.apply(web, { port: 4001, baud: 2400, parity: "E" });
+        f.server.close();
+        expect(r.ok).to.equal(true);
+        const sets = f.seen.filter((s) => s.startsWith("{"));
+        expect(sets).to.have.length(2);
+        const serial = JSON.parse(sets[0]);
+        expect(serial).to.include({ setfunc: "Serial", BaudRate: "9", DataBits: "3", StopBits: "0", Parity: "24", FlowCtrl: "0" });
+        expect(serial.token_text).to.be.a("string").and.not.equal("");
+        const mode = JSON.parse(sets[1]);
+        expect(mode).to.include({ setfunc: "OPMode", OpMode: "10", LocalTcpPort: "4001", CommandPort: "966", MaxConnect: "2" });
+        expect(f.seen.indexOf("RESTART")).to.be.greaterThan(f.seen.indexOf(sets[1]));
+    });
+
+    it("changes nothing when a page does not look like the expected firmware", async () => {
+        const f = await fakeConsole({ noSerialField: true });
+        const web = new MoxaWeb({ host: "127.0.0.1", port: f.port, password: "x" });
+        const r = await setup.apply(web, { port: 4001, baud: 2400, parity: "E" });
+        f.server.close();
+        expect(r.ok).to.equal(false);
+        expect(f.seen.some((s) => s.startsWith("{") || s === "RESTART")).to.equal(false);
+    });
+
+    it("refuses values it cannot set", () => {
+        expect(setup.checkTarget({ port: 4001, baud: 2400, parity: "E" })).to.equal(null);
+        expect(setup.checkTarget({ port: 4001, baud: 2401, parity: "E" })).to.be.a("string");
+        expect(setup.checkTarget({ port: 966, baud: 2400, parity: "E" })).to.be.a("string");
+        expect(setup.checkTarget({ port: 4001, baud: 2400, parity: "X" })).to.be.a("string");
+    });
+});

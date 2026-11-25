@@ -217,6 +217,12 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.3
+
+- Moxa setup through the web console (TCP server mode, raw, serial line of the site), switch in the table
+- intervals per site as table, two-way
+- COM port path /opt/iobroker/com/<a1..a4>-moxa-<id>, finding `com_port` when not mounted
+
 ### 0.3.2
 
 - Moxa web console parsed correctly (values are set by script on the overview page), operating mode and serial settings read

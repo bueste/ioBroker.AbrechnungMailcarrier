@@ -15,6 +15,7 @@ declare global {
             mbusUnits: Array<Record<string, any>>;
             mbusRouters: Array<Record<string, any>>;
             mbusMeters: Array<Record<string, any>>;
+            mbusSettings: Array<Record<string, any>>;
             mbusToken1: string;
             mbusToken2: string;
             mbusToken3: string;

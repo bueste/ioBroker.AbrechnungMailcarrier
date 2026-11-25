@@ -682,6 +682,78 @@
                     "lg": 6,
                     "xl": 6
                 },
+                "mbusSettings": {
+                    "type": "table",
+                    "label": "mbusSettingsTable",
+                    "help": "mbusSettingsHelp",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
+                    "items": [
+                        {
+                            "type": "select",
+                            "attr": "site",
+                            "title": "colSite",
+                            "options": [
+                                {
+                                    "label": "a1",
+                                    "value": "1"
+                                },
+                                {
+                                    "label": "a2",
+                                    "value": "2"
+                                },
+                                {
+                                    "label": "a3",
+                                    "value": "3"
+                                },
+                                {
+                                    "label": "a4",
+                                    "value": "4"
+                                }
+                            ],
+                            "default": "1",
+                            "width": "10%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "scanDays",
+                            "title": "colScanDays",
+                            "default": 30,
+                            "min": 1,
+                            "max": 365,
+                            "width": "20%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "readMinutes",
+                            "title": "colReadMinutes",
+                            "default": 15,
+                            "min": 5,
+                            "max": 1440,
+                            "width": "25%"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "timesyncDays",
+                            "title": "colTimesyncDays",
+                            "default": 30,
+                            "min": 1,
+                            "max": 365,
+                            "width": "25%"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "timesyncEnabled",
+                            "title": "colTimesyncEnabled",
+                            "default": false,
+                            "width": "20%"
+                        }
+                    ]
+                },
                 "_mbusTablesHint": {
                     "type": "staticText",
                     "text": "mbusTablesHint",
@@ -972,7 +1044,7 @@
                             "attr": "name",
                             "title": "colName",
                             "default": "",
-                            "width": "17%"
+                            "width": "14%"
                         },
                         {
                             "type": "text",
@@ -996,7 +1068,7 @@
                             "title": "colComPort",
                             "readOnly": true,
                             "default": "",
-                            "width": "24%"
+                            "width": "20%"
                         },
                         {
                             "type": "password",
@@ -1016,6 +1088,13 @@
                             "type": "checkbox",
                             "attr": "fwAuto",
                             "title": "colFwAuto",
+                            "default": true,
+                            "width": "9%"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "setup",
+                            "title": "colMoxaSetup",
                             "default": true,
                             "width": "9%"
                         }

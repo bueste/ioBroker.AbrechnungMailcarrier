@@ -1,0 +1,51 @@
+<link href=nport2g.css rel=stylesheet><title>TCP Server Mode</title><script src=xss.js></script><script src=valid.js></script><script src=view.js></script><script>function CheckValue(form)
+{if(form.TCPAliveCheck.value<0||!isValidNumber(form.TCPAliveCheck.value))
+{alert(form.TCPAliveCheck.value+errmsg);form.TCPAliveCheck.focus();return false;}
+if(!isValidPort(form.InactivityTime.value))
+{alert(form.InactivityTime.value+errmsg);form.InactivityTime.focus();return false;}
+if(form.MaxConnect.value<1||form.MaxConnect.value>4||!isValidNumber(form.MaxConnect.value))
+{alert(form.MaxConnect.value+errmsg);form.MaxConnect.focus();return false;}
+if(form.packlen.value<0||form.packlen.value>1024||!isValidNumber(form.packlen.value))
+{alert(form.packlen.value+errmsg);form.packlen.focus();return false;}
+if(!isValidPort(form.ForceTxTime.value))
+{alert(form.ForceTxTime.value+errmsg);form.ForceTxTime.focus();return false;}
+if(!isValidPort(form.LocalTcpPort.value))
+{alert(form.LocalTcpPort.value+errmsg);form.LocalTcpPort.focus();return false;}
+if(!isValidPort(form.CommandPort.value))
+{alert(form.CommandPort.value+errmsg);form.CommandPort.focus();return false;}
+if(!isValidHexcode(form.DelimiterChar1.value)&&!document.opmode.DelimiterChar1.disabled)
+{alert(form.DelimiterChar1.value+errmsg);form.DelimiterChar1.focus();return false;}
+if(!isValidHexcode(form.DelimiterChar2.value)&&!document.opmode.DelimiterChar2.disabled)
+{alert(form.DelimiterChar2.value+errmsg);form.DelimiterChar2.focus();return false;}
+return true;}</script><body onload=window_onload();delim_ctrl();jsDecodeEntities();><p class=HEADER_BLUE>Operating Settings<form name=opmode action=Set.htm onsubmit="return CheckValue(this)"><table width=100% border=1><tr><td width=100% colspan=2><p class=TITLE><script>document.write("Port "+portno);</script><tr><td width=30%>Operation mode<td width=70%><select size=1 name=OpMode onchange=ChangePage(this.form)>
+<option value=02 id=Drv>Real COM Mode
+<option value=20 id=Rfc style=display:none>RFC 2217 Mode
+<option value=10 id=Svr selected>TCP Server Mode
+<option value=13 id=Cli>TCP Client Mode
+<option value=14 id=Udp>UDP Mode
+<option value=0 id=PrS>Pair Connection Slave Mode
+<option value=1 id=PrM>Pair Connection Master Mode
+<option value=12 id=Emd style=display:none>Ethernet Modem Mode
+<option value=8 id=Rtl>Reverse Telnet Mode
+<option value=15 id=Ppp style=display:none>PPP Mode
+<option value=7 id=Dis>Disabled</select><tr><td width=30%>TCP alive check time<td width=70%><input name=TCPAliveCheck size=2 maxlength=2>(0 - 99 min)<tr><td width=30%>Inactivity time<td width=70%><input name=InactivityTime size=5 maxlength=5>(0 - 65535 ms)<tr><td width=30%>Max connection<td width=70%><select name=MaxConnect onchange=conn_ctrl()>
+<option value=1>1
+<option value=2>2
+<option value=3>3
+<option value=4>4</select><tr><td width=30%>Ignore jammed IP<td width=70%><input type=radio name=ignorejam value=0>No&nbsp;
+<input type=radio name=ignorejam value=1>Yes<tr><td width=30%>Allow driver control<td width=70%><input type=radio name=allowdrvctrl value=0>No&nbsp;
+<input type=radio name=allowdrvctrl value=1>Yes<tr><td width=100% colspan=2><p class=TITLE>Data Packing<tr><td width=30%>Packing length<td width=70%><input name=packlen size=5 maxlength=4 onkeyup=delim_ctrl(); onchange=delim_ctrl();>(0 - 1024)<tr><td width=30%>Delimiter 1<td width=70%><input name=DelimiterChar1 size=2 maxlength=2>(Hex)
+<input type=checkbox name=DelimiterChar1Flag value=ON>Enable<tr><td width=30%>Delimiter 2<td width=70%><input name=DelimiterChar2 size=2 maxlength=2>(Hex)
+<input type=checkbox name=DelimiterChar2Flag value=ON>Enable<tr><td width=30%>Delimiter process<td width=70%><select size=1 name=delimprocess>
+<option value=1>Do Nothing
+<option value=2>Delimiter+1
+<option value=4>Delimiter+2
+<option value=8>Strip Delimiter</select> (Processed only when Packing length is 0)<tr><td width=30%>Force transmit<td width=70%><input name=ForceTxTime size=5 maxlength=5>(0 - 65535 ms)<tr><td width=100% colspan=2><p class=TITLE>TCP Server Mode<tr><td width=30%>Local TCP port<td width=70%><input name=LocalTcpPort size=5 maxlength=5><tr><td width=30%>Command port<td width=70%><input name=CommandPort size=5 maxlength=5><tr id=applyAll style=display:none><td width=100% colspan=2><input type=checkbox name=ApplyAll value=ON>Apply the above settings to all serial ports (Local listen port will be enumerated automatically).</table><script>document.write("<INPUT type='hidden' name='PortNo' value='"+portno+"'>");</script><p align=center><input type=submit value=Submit name=Submit></p><input type=hidden name=setfunc value=OPMode>
+<input type=hidden name=token_text></form><script>function sS(v1,v2,max,ig,al)
+{document.opmode.TCPAliveCheck.value=v1;document.opmode.InactivityTime.value=v2;document.opmode.MaxConnect.value=max;document.opmode.ignorejam[ig].checked=true;document.opmode.allowdrvctrl[al].checked=true;}
+function sPack(plen,d1,f1,d2,f2,dp,ftx)
+{document.opmode.packlen.value=plen;document.opmode.DelimiterChar1.value=d1;document.opmode.DelimiterChar1Flag.checked=f1;document.opmode.DelimiterChar2.value=d2;document.opmode.DelimiterChar2Flag.checked=f2;document.opmode.delimprocess.value=dp;document.opmode.ForceTxTime.value=ftx;}
+function sSvr(lp,cmd)
+{document.opmode.LocalTcpPort.value=lp;document.opmode.CommandPort.value=cmd;}
+function set(sField,sValue)
+{document.opmode[sField].value=sValue;}function window_onload(){show_Emodem(1);show_RFC2217(0);show_PPP(0);show_applyAll(0);sS("7","0","1",0,0);sPack("0","0",false,"0",false,"1","0");sSvr("4001","966");conn_ctrl();set("token_text","g5Kf3LgAvSvS08oI");}</SCRIPT>

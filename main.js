@@ -180,6 +180,23 @@ class AbrechnungMailcarrier extends utils.Adapter {
         }
         this.mbusObjects = new Set();
         const dir = utils.getAbsoluteInstanceDataDir(this);
+        // the virtual COM ports get a short path next to the data folder (/opt/iobroker/com/a1-moxa-21) when it can
+        // be created there, otherwise inside the data folder of the instance
+        let comRoot = dir;
+        try {
+            const parent = require("node:path").dirname(
+                utils.getAbsoluteDefaultDataDir(),
+            );
+            require("node:fs").mkdirSync(
+                require("node:path").join(parent, "com"),
+                {
+                    recursive: true,
+                },
+            );
+            comRoot = parent;
+        } catch {
+            // keep the data folder of the instance
+        }
         // the web console password of each Moxa is entered in its table row; plain entries are encrypted here
         const moxaRows = asRows(this.config.mbusMoxas);
         let encrypted = false;
@@ -235,15 +252,29 @@ class AbrechnungMailcarrier extends utils.Adapter {
                 dir,
             }),
             moxaPassword,
+            moxaSetup: (label, id) => {
+                const row = asRows(this.config.mbusMoxas).find(
+                    (x) =>
+                        String(x.site) === String(label).slice(1) &&
+                        Number(x.id) === Number(id),
+                );
+                return !row || row.setup !== false;
+            },
             comMounts: new ComMounts({
                 log: this.log,
-                dir,
-                onChange: (label, id, file) =>
-                    this.mbusSetState(
+                dir: comRoot,
+                onChange: async (label, id, file) => {
+                    await this.mbusSetState(
                         `mbus.${label}.gateways.${id}.comPort`,
                         file,
-                        "COM-Port (automatisch eingebunden)",
-                    ),
+                        "COM-Port (eingebunden, leer = nicht eingebunden)",
+                    );
+                    await this.mbusSetState(
+                        `mbus.${label}.gateways.${id}.comPortUp`,
+                        file !== "",
+                        "COM-Port eingebunden",
+                    );
+                },
             }),
             store: new Store(dir),
             version: pkg.version,
@@ -255,6 +286,7 @@ class AbrechnungMailcarrier extends utils.Adapter {
                     units: asRows(this.config.mbusUnits),
                     routers: asRows(this.config.mbusRouters),
                     meters: asRows(this.config.mbusMeters),
+                    settings: asRows(this.config.mbusSettings),
                 }),
                 write: async (t) => {
                     this.config.mbusMoxas = t.moxas;
@@ -266,6 +298,7 @@ class AbrechnungMailcarrier extends utils.Adapter {
                                 mbusUnits: t.units,
                                 mbusRouters: t.routers,
                                 mbusMeters: t.meters || [],
+                                mbusSettings: t.settings || [],
                             },
                         },
                     );
@@ -357,8 +390,14 @@ class AbrechnungMailcarrier extends utils.Adapter {
                 lines.push(
                     `    Verbindung: ${g("reachable") === undefined ? "noch nicht abgefragt" : g("reachable") ? "erreichbar" : `NICHT erreichbar (${g("lastError") || "?"})`}`,
                 );
+                const mounts = this.mbus && this.mbus.mounts;
+                const comFile = mounts
+                    ? mounts.file(a, Number(id))
+                    : g("comPort") || "";
                 lines.push(
-                    `    COM-Port: ${g("comPort") || "nicht eingebunden"}`,
+                    g("comPort")
+                        ? `    COM-Port: EINGEBUNDEN, ${g("comPort")}`
+                        : `    COM-Port: NICHT EINGEBUNDEN (vorgesehen: ${comFile || "-"})`,
                 );
                 lines.push(
                     `    Letzte Abfrage: ${g("lastPoll") || "-"}, Zähler: ${g("meters") ?? "-"}`,

@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.2",
+        "version": "0.3.3",
         "news": {
+            "0.3.3": {
+                "en": "Moxa setup: a Moxa in the wrong operating mode (e.g. Real COM) or with the wrong serial line is set up through its web console (TCP server mode, raw, 2400 8E1) and restarted. Intervals per site as a table in the instance configuration, kept in sync. The COM port has a short path (/opt/iobroker/com/...), its state is shown in the status and a finding is raised when it is not mounted.",
+                "de": "Moxa-Einrichtung: Eine Moxa im falschen Modus (z. B. Real COM) oder mit falscher serieller Einstellung wird über ihre Web-Konsole eingerichtet (TCP Server Mode, Raw, 2400 8E1) und neu gestartet. Intervalle pro Anlage als Tabelle in der Instanz-Konfiguration, abgeglichen. Der COM-Port hat einen kurzen Pfad (/opt/iobroker/com/...), sein Zustand steht im Status, und ein Befund meldet, wenn er nicht eingebunden ist."
+            },
             "0.3.2": {
                 "en": "The Moxa web console is read correctly (model, firmware, MAC, operating mode, serial settings). New button Status in the tab Moxa and routers shows connection, COM port, firmware, operating mode and routers. A busy web console is reported as such.",
                 "de": "Die Web-Konsole der Moxa wird richtig gelesen (Modell, Firmware, MAC, Betriebsart, serielle Einstellung). Neuer Knopf Status im Reiter Moxa und Router zeigt Verbindung, COM-Port, Firmware, Betriebsart und Router. Eine belegte Web-Konsole wird als solche gemeldet."
@@ -145,6 +149,7 @@
         "mbusUnits": [],
         "mbusRouters": [],
         "mbusMeters": [],
+        "mbusSettings": [],
         "mbusToken1": "",
         "mbusToken2": "",
         "mbusToken3": "",

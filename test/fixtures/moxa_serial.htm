@@ -1,0 +1,48 @@
+<link href=nport2g.css rel=stylesheet><title>Serial Settings</title><script src=xss.js></script><script src=view.js></script><body onload=window_onload();jsDecodeEntities();><p class=HEADER_BLUE>Serial Settings<form name=serial action=Set.htm><table width=100% border=1><tr><td width=100% colspan=2><p class=TITLE><script>document.write("Port "+portno);</script><tr><td width=30%>Port alias<td width=70%><input name=PortAlias size=15 maxlength=15><tr><td width=100% colspan=2><p class=TITLE>Serial Parameters<tr><td width=30%>Baud rate<td width=70%><select size=1 name=BaudRate>
+<option value=0 id=Baud50 style=display:none>50
+<option value=1 id=Baud75 style=display:none>75
+<option value=2>110
+<option value=3>134
+<option value=4>150
+<option value=5>300
+<option value=6>600
+<option value=7>1200
+<option value=8>1800
+<option value=9>2400
+<option value=10>4800
+<option value=11>7200
+<option value=12>9600
+<option value=13>19200
+<option value=14>38400
+<option value=15>57600
+<option value=16>115200
+<option value=17>230400
+<option value=18 id=Baud460800 style=display:none>460800
+<option value=19 id=Baud921600 style=display:none>921600</select><tr><td width=30%>Data bits<td width=70%><select size=1 name=DataBits>
+<option value=0>5
+<option value=1>6
+<option value=2>7
+<option value=3>8</select><tr><td width=30%>Stop bits<td width=70%><select size=1 name=StopBits>
+<option value=0>1
+<option value=3>1.5
+<option value=4>2</select><tr><td width=30%>Parity<td width=70%><select size=1 name=Parity>
+<option value=00>None
+<option value=08>Odd
+<option value=24>Even
+<option value=40>Mark
+<option value=56>Space</select><tr><td width=30%>Flow control<td width=70%><select size=1 name=FlowCtrl>
+<option value=0>None
+<option value=1>RTS/CTS
+<option value=2>XON/XOFF
+<option value=3>DTR/DSR</select><tr><td width=30%>FIFO<td width=70%><input type=radio name=FIFO value=1>Enable
+<input type=radio name=FIFO value=0>Disable<tr id=onlyRS232 style=display:none><td width=30%>Interface<td width=70%>RS-232 Only<tr id=interface_opt style=display:none><td width=30%>Interface<td width=70%><select size=1 name=IfType>
+<option value=0 id=RS232 style=display:none>RS-232
+<option value=1 id=RS422 style=display:none>RS-422
+<option value=2 id=RS485_2w style=display:none>RS-485 2-Wire
+<option value=3 id=RS485_4w style=display:none>RS-485 4-Wire</select><tr id=applyAll style=display:none><td width=100% colspan=2><input type=checkbox name=ApplyAll value=ON>Apply the above settings to all serial ports</table><script>document.write("<INPUT type='hidden' name='PortNo' value='"+portno+"'>");</script><p align=center><input type=submit value=Submit name=Submit></p><input type=hidden name=setfunc value=Serial>
+<input type=hidden name=token_text></form><script>function set(sField,sValue)
+{document.serial[sField].value=sValue;}
+function choose(sField,sValue)
+{document.serial[sField].selectedIndex=sValue;}
+function setFifo(flag)
+{document.serial.FIFO[flag].checked=true;}function window_onload(){show_lowBaud(1);show_highBaud(0);show_interface(0);show_applyAll(0);set("PortAlias","");choose("BaudRate",16);choose("DataBits",3);choose("StopBits",0);choose("Parity",0);choose("FlowCtrl",1);setFifo(0);set("token_text","acfn4yMGYtIwN89J");}</SCRIPT>
