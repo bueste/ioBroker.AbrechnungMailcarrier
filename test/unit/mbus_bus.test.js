@@ -106,3 +106,42 @@ describe("Bus", () => {
         expect(msg).to.contain("127.0.0.1");
     });
 });
+
+describe("Bus pause after an answer", () => {
+    const net = require("node:net");
+
+    /** A master that ignores a telegram arriving less than 50 ms after its last answer (like the Relay master). */
+    function slowTurnaround() {
+        let lastAnswer = 0;
+        const server = net.createServer((sock) => {
+            sock.on("data", (d) => {
+                const now = Date.now();
+                if (now - lastAnswer < 50) {
+                    return;
+                }
+                if (d[0] === 0x10 && d[1] === 0x40 && [1, 2, 3].includes(d[2])) {
+                    lastAnswer = now;
+                    sock.write(Buffer.from([0xe5]));
+                }
+            });
+        });
+        return new Promise((r) => server.listen(0, "127.0.0.1", () => r(server)));
+    }
+
+    it("finds the meter right after a meter that answered, because it waits after every answer", async () => {
+        const server = await slowTurnaround();
+        const port = server.address().port;
+        const quick = new Bus({ host: "127.0.0.1", port, ackWaitMs: 60, guardMs: 0 });
+        await quick.connect();
+        const missed = await quick.scan(1, 3);
+        quick.close();
+        const careful = new Bus({ host: "127.0.0.1", port, ackWaitMs: 60 });
+        await careful.connect();
+        await new Promise((r) => setTimeout(r, 150));
+        const found = await careful.scan(1, 3);
+        careful.close();
+        await new Promise((r) => server.close(r));
+        expect(missed.map((h) => h.addr)).to.deep.equal([1, 3]);
+        expect(found.map((h) => h.addr)).to.deep.equal([1, 2, 3]);
+    });
+});

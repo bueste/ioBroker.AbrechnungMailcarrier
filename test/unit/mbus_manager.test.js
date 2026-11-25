@@ -76,7 +76,7 @@ describe("MbusManager", () => {
                 states[id] = v;
             },
             now: () => clock,
-            busOptions: { ackWaitMs: 60, dataWaitMs: 200, connectTimeoutMs: 500, afterSetMs: 10 },
+            busOptions: { ackWaitMs: 60, dataWaitMs: 200, connectTimeoutMs: 500, afterSetMs: 10, guardMs: 5 },
             scanRange: [99, 103],
         });
         mgr.store.init();

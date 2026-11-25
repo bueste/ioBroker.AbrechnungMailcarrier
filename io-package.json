@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "abrechnungmailcarrier",
-        "version": "0.3.4",
+        "version": "0.3.5",
         "news": {
+            "0.3.5": {
+                "en": "Bus scan finds every meter: after an answer the master needs a short pause (150 ms), meters directly after an answering meter were overlooked.",
+                "de": "Der Bus-Scan findet jetzt jeden Zähler: Nach einer Antwort braucht die Zentrale eine kurze Pause (150 ms), Zähler direkt nach einem antwortenden Zähler wurden übersehen."
+            },
             "0.3.4": {
                 "en": "The instance shows connected (green) when the web application answers and every active Moxa answered at its last reading. The first bus scan runs right after a Moxa was set up.",
                 "de": "Die Instanz zeigt Verbunden (grün), wenn die Webanwendung antwortet und jede aktive Moxa bei der letzten Abfrage geantwortet hat. Der erste Bus-Scan läuft direkt nach der Einrichtung einer Moxa."

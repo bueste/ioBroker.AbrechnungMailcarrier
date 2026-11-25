@@ -217,6 +217,10 @@ npm run check             # type check
 
 ## Changelog
 
+### 0.3.5
+
+- bus scan: 150 ms pause after every answer (the Relay master ignored the next telegram, meters 2, 4, 6 were overlooked)
+
 ### 0.3.4
 
 - info.connection follows the M-Bus side (web application and active Moxas answer)
